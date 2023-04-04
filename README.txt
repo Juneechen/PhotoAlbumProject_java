@@ -1,6 +1,6 @@
 The album package overview:
 
-ShapesAlbum class:
+IShape Interface and the ShapesAlbum class:
     the model representing a album application system with the following main functionality:
     - stores a collections of IShapes objects, each is mapped to a unique String identifier for retrieval.
     - allows 2D shapes to be generated and added into the collection given some required shapes property description.

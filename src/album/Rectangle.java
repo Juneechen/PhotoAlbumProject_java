@@ -12,19 +12,20 @@ public class Rectangle extends ShapeImpl {
    * @param xCord x coordinate of the bottom left corner or center.
    * @param yCord y coordinate of the bottom left corner or center.
    */
-  public Rectangle(Color colorName, double xSize, double ySize, double xCord, double yCord) {
-    super(colorName, xSize, ySize, xCord, yCord);
+  public Rectangle(String name, Color colorName, double xSize, double ySize, double xCord, double yCord) {
+    super(name, colorName, xSize, ySize, xCord, yCord);
   }
 
   @Override
   public IShape copy() {
-    return new Rectangle(this.color, this.xDimension, this.yDimension,
+    return new Rectangle(this.name, this.color, this.xDimension, this.yDimension,
             this.position.getX(), this.position.getY());
   }
 
   @Override
   public String toString() {
-    return String.format("Type: rectangle\nMin corner: %s, Width: %.1f,Height: %.1f, %s",
+    return String.format("Name: %s\nType: rectangle\n"
+            + "Min corner: %s, Width: %.1f, Height: %.1f, %s", this.name,
             this.position.toString(), this.xDimension, this.yDimension, this.color.toString());
   }
 }

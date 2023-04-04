@@ -10,6 +10,7 @@ public class ShapeFactory {
    * given a set of shape properties, checks for validity,
    * and generate the desired shape if all info are valid.
    *
+   * @param name identifier of the shape.
    * @param kind type of the shape; current valid types: oval, rectangle.
    * @param color desired fill color.
    * @param xSize x dimension (>0) of the shape; could be width or x radius.
@@ -19,7 +20,7 @@ public class ShapeFactory {
    * @return the desired shape.
    * @throws IllegalArgumentException if any info is invalid.
    */
-  public static IShape create(String kind, String color,
+  public static IShape create(String name, String kind, String color,
                               double xSize, double ySize, double xCord, double yCord)
                               throws IllegalArgumentException {
     // check for validity:
@@ -36,13 +37,13 @@ public class ShapeFactory {
 
     // identify the type of shape to create:
     if (kind.equalsIgnoreCase("Oval")) {
-          return new Oval(c, xSize, ySize, xCord, yCord);
+          return new Oval(name, c, xSize, ySize, xCord, yCord);
     }
     if (kind.equalsIgnoreCase("Rectangle")) {
-      return new Rectangle(c, xSize, ySize, xCord, yCord);
+      return new Rectangle(name, c, xSize, ySize, xCord, yCord);
     }
     // else, unknown type
-    return null;
+    throw new IllegalArgumentException("unknown type");
   }
 
   /**
@@ -77,7 +78,7 @@ public class ShapeFactory {
    * @param name name of the color.
    * @return the corresponding Color if the name represents a known color, null otherwise.
    */
-  public static Color strToColor(String name) {
+  private static Color strToColor(String name) {
     if (name == null) {
       return null;
     }

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,14 @@ public class Snapshot {
     this.description = note;
     this.shapeInfo = shapes.stream().map(Object::toString).collect(Collectors.joining("\n"));
     this.shapes = new ArrayList<>(shapes);
+  }
+
+  /**
+   * retrieve a list of all shapes contained in one snapshot.
+   * @return an unmodifiable list of all shapes
+   */
+  public List<IShape> getShapes() {
+    return Collections.unmodifiableList(shapes);
   }
 
   @Override

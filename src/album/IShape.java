@@ -5,18 +5,32 @@ package album;
  */
 public interface IShape {
   /**
-   * return the position of the shape.
-   *
-   * @return a 2D Point representing a shape's position.
-   */
-  Point getPosition();
-
-  /**
    * return the Color of the shape.
    *
    * @return color of the shape.
    */
   Color getColor();
+
+  /**
+   * return the x dimension of the shape.
+   *
+   * @return x dimension of the shape; could be width or x radius.
+   */
+  double getXDimension();
+
+  /**
+   * return the y dimension of the shape.
+   *
+   * @return y dimension of the shape; could be height or y radius.
+   */
+  double getYDimension();
+
+  /**
+   * return the position of the shape.
+   *
+   * @return a 2D Point representing a shape's position.
+   */
+  Point getPosition();
 
   /**
    * move the shape to the target position.
@@ -40,10 +54,10 @@ public interface IShape {
    * Should only be used through the {@link ShapeFactory} class
    * that ensures all parameter are valid for a shape.
    *
-   * @param dx change in width or x radius, positive: make bigger, negative: make smaller.
-   * @param dy change in height or y radius, positive: make bigger, negative: make smaller.
+   * @param x desired x dimension.
+   * @param y desired y dimension.
    */
-  void resize(double dx, double dy);
+  void resize(double x, double y);
 
   /**
    * make a copy of the shape.

@@ -12,19 +12,20 @@ public class Oval extends ShapeImpl {
    * @param xCord x coordinate of the bottom left corner or center.
    * @param yCord y coordinate of the bottom left corner or center.
    */
-  public Oval(Color colorName, double xSize, double ySize, double xCord, double yCord) {
-    super(colorName, xSize, ySize, xCord, yCord);
+  public Oval(String name, Color colorName, double xSize, double ySize, double xCord, double yCord) {
+    super(name, colorName, xSize, ySize, xCord, yCord);
   }
 
   @Override
   public IShape copy() {
-    return new Oval(this.color, this.xDimension, this.yDimension,
+    return new Oval(this.name, this.color, this.xDimension, this.yDimension,
             this.position.getX(), this.position.getY());
   }
 
   @Override
   public String toString() {
-    return String.format("Type: oval\nCenter: %s, X radius: %.1f, Y radius: %.1f, %s",
+    return String.format("Name: %s\nType: oval\n"
+            + "Center: %s, X radius: %.1f, Y radius: %.1f, %s", this.name,
             this.position.toString(), this.xDimension, this.yDimension, this.color.toString());
   }
 }

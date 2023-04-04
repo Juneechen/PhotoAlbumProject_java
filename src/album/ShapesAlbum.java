@@ -1,6 +1,7 @@
 package album;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +10,10 @@ import java.util.stream.Collectors;
 /**
  * A Shapes Album class representing a simple "photo album" from shapes.
  */
-public class ShapesAlbum {
-  private Map<String, IShape> allShapes = new HashMap<>();
+public class ShapesAlbum implements IAlbum {
+  private Map<String, IShape> shapeMap = new HashMap<>();
+  private List<IShape> allShapes = new ArrayList<>();
   private List<Snapshot> snapshots = new ArrayList<>();
-  private List<String> eventLog = new ArrayList<>();
 
   /**
    * add a shape into the album given a unique identifier and a set of shape properties.
@@ -25,12 +26,19 @@ public class ShapesAlbum {
    * @param xCord x coordinate to place the shape.
    * @param yCord y coordinate to place the shape.
    */
-  public void placeShape(String identifier, String kind, String color, double xSize, double ySize, double xCord, double yCord) {
-    if (identifier == null || identifier.isEmpty() || allShapes.containsKey(identifier)) {
+  @Override
+  public void add(String identifier, String kind, String color, double xSize, double ySize, double xCord, double yCord) {
+    if (identifier == null || identifier.isEmpty() || shapeMap.containsKey(identifier)) {
       throw new IllegalArgumentException("invalid identifier");
     }
-    IShape toAdd = ShapeFactory.create(kind, color, xSize, ySize, xCord, yCord);
-    allShapes.put(identifier, toAdd);
+    try {
+      IShape toAdd = ShapeFactory.create(identifier, kind, color, xSize, ySize, xCord, yCord);
+      shapeMap.put(identifier, toAdd);
+      allShapes.add(toAdd);
+    }
+    catch (IllegalArgumentException e) {
+      return;
+    }
   }
 
   /**
@@ -39,8 +47,13 @@ public class ShapesAlbum {
    * @param identifier a unique identifier for the shape.
    * @return the shape being removed, or null if the identifier do not exist.
    */
+  @Override
   public IShape remove(String identifier) {
-    return allShapes.remove(identifier);
+    IShape target = shapeMap.remove(identifier);
+    if (target != null) {
+      allShapes.remove(target);
+    }
+    return target;
   }
 
   /**
@@ -50,8 +63,9 @@ public class ShapesAlbum {
    * @param x destination x coordinate.
    * @param y destination y coordinate.
    */
+  @Override
   public void move(String identifier, double x, double y) {
-    IShape s = allShapes.get(identifier);
+    IShape s = shapeMap.get(identifier);
     if (s == null) {
       return;
     }
@@ -65,10 +79,11 @@ public class ShapesAlbum {
    * @param xSize the desired new x dimension (>0).
    * @param ySize the desired new y dimension (>0).
    */
+  @Override
   public void resize(String identifier, double xSize, double ySize) {
-    IShape s = allShapes.get(identifier);
+    IShape s = shapeMap.get(identifier);
     if (s == null) {
-      throw new IllegalArgumentException("Shape not found.\n");
+      return;
     }
     ShapeFactory.changeSize(s, xSize, ySize);
   }
@@ -80,10 +95,11 @@ public class ShapesAlbum {
    * @param colorName a string representing the name of the desired color.
    * @throws IllegalArgumentException if identifier or color name is invalid.
    */
+  @Override
   public void changeColor(String identifier, String colorName) throws IllegalArgumentException {
-    IShape shape = this.allShapes.get(identifier);
+    IShape shape = this.shapeMap.get(identifier);
     if (shape == null) {
-      throw new IllegalArgumentException("Shape not found.\n");
+      return;
     }
 
     ShapeFactory.changeColor(shape, colorName);
@@ -94,21 +110,30 @@ public class ShapesAlbum {
    *
    * @param note a descriptive note for this snapshot.
    */
+  @Override
   public void takeSnapshot(String note) {
-    this.snapshots.add(new Snapshot(note, this.allShapes.values()));
+    this.snapshots.add(new Snapshot(note, this.allShapes));
   }
 
   /**
    * show all snapshots taken.
    * @return a String representing all snapshots.
    */
+  @Override
   public String showSnapshots() {
-    return this.snapshots.stream().map(Snapshot::toString).collect(Collectors.joining("\n"));
+    return "Printing Snapshots\n"
+            + this.snapshots.stream().map(Snapshot::toString).collect(Collectors.joining("\n"));
+  }
+
+  @Override
+  public List<Snapshot> getSnapshots() {
+    return Collections.unmodifiableList(snapshots);
   }
 
   /**
    * delete all snapshots.
    */
+  @Override
   public void resetSnapshots() {
     this.snapshots = new ArrayList<>();
   }
@@ -116,7 +141,18 @@ public class ShapesAlbum {
   /**
    * remove all items in the album; snapshots are not deleted.
    */
+  @Override
   public void makeEmpty() {
-    allShapes = new HashMap<>();
+    shapeMap = new HashMap<>();
+    allShapes = new ArrayList<>();
+  }
+
+  /**
+   * a text representation of all shapes in the album.
+   * @return a text description of all shapes.
+   */
+  @Override
+  public String toString() {
+    return this.allShapes.stream().map(IShape::toString).collect(Collectors.joining("\n\n"));
   }
 }
