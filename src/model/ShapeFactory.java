@@ -1,4 +1,4 @@
-package album;
+package model;
 
 /**
  * A ShapeFactory that knows the supported types, colors and properties of shapes.

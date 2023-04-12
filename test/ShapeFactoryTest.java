@@ -1,7 +1,7 @@
 import static org.junit.Assert.assertEquals;
 
-import album.IShape;
-import album.ShapeFactory;
+import model.IShape;
+import model.ShapeFactory;
 import org.junit.Test;
 
 public class ShapeFactoryTest {

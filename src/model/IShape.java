@@ -1,4 +1,4 @@
-package album;
+package model;
 
 /**
  * an IShape interface for the ShapeAlbum.

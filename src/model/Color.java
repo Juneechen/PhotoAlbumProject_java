@@ -1,4 +1,4 @@
-package album;
+package model;
 
 /**
  * enum Color representing the following supported colors for ShapesAlbum:

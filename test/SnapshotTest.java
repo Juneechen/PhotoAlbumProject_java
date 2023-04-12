@@ -3,11 +3,11 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import album.Color;
-import album.IShape;
-import album.Oval;
-import album.Rectangle;
-import album.Snapshot;
+import model.Color;
+import model.IShape;
+import model.Oval;
+import model.Rectangle;
+import model.Snapshot;
 import org.junit.Before;
 import org.junit.Test;
 

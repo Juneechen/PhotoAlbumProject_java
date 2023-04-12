@@ -1,4 +1,4 @@
-package album;
+package model;
 
 import java.util.List;
 

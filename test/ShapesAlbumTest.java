@@ -1,9 +1,9 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import album.IAlbum;
-import album.IShape;
-import album.ShapesAlbum;
+import model.IAlbum;
+import model.IShape;
+import model.ShapesAlbum;
 import org.junit.Before;
 import org.junit.Test;
 /**

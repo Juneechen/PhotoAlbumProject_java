@@ -1,4 +1,4 @@
-package album;
+package model;
 
 public class Rectangle extends ShapeImpl {
   /**

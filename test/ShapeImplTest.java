@@ -1,11 +1,11 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import album.Color;
-import album.IShape;
-import album.Oval;
-import album.Point;
-import album.Rectangle;
+import model.Color;
+import model.IShape;
+import model.Oval;
+import model.Point;
+import model.Rectangle;
 import org.junit.Assert;
 import org.junit.Test;
 
