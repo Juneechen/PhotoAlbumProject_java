@@ -11,7 +11,6 @@ import controller.Features;
 public class SwingView extends JFrame implements IView {
   public static final int WIDTH = 600;
   public static final int HEIGHT = 600;
-  private JPanel mainPane;
   private JLabel infoPane;
   private JLabel graphicPane;
   private JPanel buttonsPane;
@@ -23,19 +22,9 @@ public class SwingView extends JFrame implements IView {
   public SwingView(String title) {
     super(title);
     super.setSize(WIDTH, HEIGHT);
+    setUpPane();
 
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    // setLayout(new FlowLayout());
-
-    setUpPane();
-    // this.setContentPane(mainPane);
-
-
-//
-//    add(prev);
-//    add(next);
-//    add(select);
-//    add(quit);
 
     // pack();
   }
@@ -68,13 +57,7 @@ public class SwingView extends JFrame implements IView {
     graphicPane.setBackground(new Color(60, 120, 120));
     // graphicPane.setPreferredSize(new Dimension(WIDTH, HEIGHT-150));
 
-    // make main Pane that contains the above components
-//    mainPane = new JPanel(new BorderLayout());
-//    mainPane.setSize(WIDTH, HEIGHT);
-//    mainPane.add(infoPane, BorderLayout.PAGE_START);
-//    mainPane.add(graphicPane, BorderLayout.CENTER);
-//    mainPane.add(buttonsPane, BorderLayout.PAGE_END);
-
+    // add the above components to default panel
     this.add(infoPane, BorderLayout.PAGE_START);
     this.add(graphicPane, BorderLayout.CENTER);
     this.add(buttonsPane, BorderLayout.PAGE_END);
