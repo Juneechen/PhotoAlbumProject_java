@@ -18,7 +18,8 @@ public class Snapshot {
   private final String id;
   private final String timestamp;
   private final String description;
-  private final String shapeInfo;
+  private final String shapesDescription;
+  // private final List<String> shapesSpec;
   private final List<IShape> shapes;
 
   /**
@@ -34,8 +35,24 @@ public class Snapshot {
     this.id = this.time.format(DateTimeFormatter.ofPattern(ID_Format));
     this.timestamp = this.time.format(DateTimeFormatter.ofPattern(TIME_FORMAT));
     this.description = note;
-    this.shapeInfo = shapes.stream().map(Object::toString).collect(Collectors.joining("\n"));
+    this.shapesDescription = shapes.stream().map(Object::toString).collect(Collectors.joining("\n"));
     this.shapes = new ArrayList<>(shapes);
+  }
+
+  /**
+   * id getter.
+   * @return the id.
+   */
+  public String getId() {
+    return this.id;
+  }
+
+  /**
+   * timestamp getter.
+   * @return the timestamp.
+   */
+  public String getDescription() {
+    return this.description;
   }
 
   /**
@@ -49,6 +66,6 @@ public class Snapshot {
   @Override
   public String toString() {
     return String.join("\n", "Snapshot ID: " + this.id, "Timestamp: " + this.timestamp,
-            "Description: " + this.description, "Shape Information:", this.shapeInfo);
+            "Description: " + this.description, "Shape Information:", this.shapesDescription);
   }
 }
