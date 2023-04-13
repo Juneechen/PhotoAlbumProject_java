@@ -76,6 +76,18 @@ public interface IAlbum {
   List<Snapshot> getSnapshots();
 
   /**
+   * retrieve the ID of all snapshots taken.
+   * @return a list of all snapshots' ID.
+   */
+  List<String> getSnapshotIDs();
+
+//  /**
+//   * retrieve a snapshot with its ID.
+//   * @return the snapshot being requested if found, null otherwise.
+//   */
+//  Snapshot getSnapshotWithID(String id);
+
+  /**
    * delete all snapshots.
    */
   void resetSnapshots();
