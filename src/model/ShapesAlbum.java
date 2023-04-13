@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
  */
 public class ShapesAlbum implements IAlbum {
   private Map<String, IShape> shapeMap = new HashMap<>();
+  // private Map<String, Snapshot> snapshotMap = new HashMap<>();
   private List<IShape> allShapes = new ArrayList<>();
   private List<Snapshot> snapshots = new ArrayList<>();
 
@@ -114,7 +115,10 @@ public class ShapesAlbum implements IAlbum {
    */
   @Override
   public void takeSnapshot(String note) {
-    this.snapshots.add(new Snapshot(note, this.allShapes));
+
+    Snapshot toAdd = new Snapshot(note, this.allShapes);
+    this.snapshots.add(toAdd);
+    // this.snapshotMap.put(toAdd.getId(), toAdd);
   }
 
   /**
@@ -131,6 +135,16 @@ public class ShapesAlbum implements IAlbum {
   public List<Snapshot> getSnapshots() {
     return Collections.unmodifiableList(snapshots);
   }
+
+  @Override
+  public List<String> getSnapshotIDs() {
+    return snapshots.stream().map(Snapshot::getId).collect(Collectors.toList());
+  }
+//
+//  @Override
+//  public Snapshot getSnapshotWithID(String id) {
+//    return snapshotMap.get(id);
+//  }
 
   /**
    * delete all snapshots.
