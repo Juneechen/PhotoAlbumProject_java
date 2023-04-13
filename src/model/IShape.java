@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Color;
+
 /**
  * an IShape interface for the ShapeAlbum.
  */
@@ -16,14 +18,14 @@ public interface IShape {
    *
    * @return x dimension of the shape; could be width or x radius.
    */
-  double getXDimension();
+  int getXDimension();
 
   /**
    * return the y dimension of the shape.
    *
    * @return y dimension of the shape; could be height or y radius.
    */
-  double getYDimension();
+  int getYDimension();
 
   /**
    * return the position of the shape.
@@ -38,7 +40,7 @@ public interface IShape {
    * @param x x coordinate of the target position.
    * @param y y coordinate of the target position.
    */
-  void setPosition(double x, double y);
+  void setPosition(int x, int y);
 
   /**
    * reset color of the shape.
@@ -57,7 +59,7 @@ public interface IShape {
    * @param x desired x dimension.
    * @param y desired y dimension.
    */
-  void resize(double x, double y);
+  void resize(int x, int y);
 
   /**
    * make a copy of the shape.

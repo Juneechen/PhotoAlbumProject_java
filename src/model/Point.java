@@ -6,14 +6,14 @@ import java.util.Objects;
  * Point class representing a 2D point.
  */
 public class Point {
-  private final double x, y;
+  private final int x, y;
 
   /**
    * construct a point.
    * @param x represents the x coordinate.
    * @param y represents the y coordinate.
    */
-  public Point(double x, double y) {
+  public Point(int x, int y) {
     this.x = x;
     this.y = y;
   }
@@ -22,7 +22,7 @@ public class Point {
    * return the y coordinate.
    * @return the y coordinate.
    */
-  public double getY() {
+  public int getY() {
     return this.y;
   }
 
@@ -30,7 +30,7 @@ public class Point {
    * return the x coordinate.
    * @return the x coordinate.
    */
-  public double getX() {
+  public int getX() {
     return this.x;
   }
 
@@ -54,6 +54,6 @@ public class Point {
 
   @Override
   public String toString() {
-    return String.format("(%.1f,%.1f)", this.x, this.y);
+    return String.format("(%d, %d)", this.x, this.y);
   }
 }

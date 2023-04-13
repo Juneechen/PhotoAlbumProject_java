@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,19 +21,20 @@ public class ShapesAlbum implements IAlbum {
    *
    * @param identifier a unique name for the shape.
    * @param kind type of the shape.
-   * @param color desired fill color.
-   * @param xSize x dimension of the shape; could be width or x radius.
-   * @param ySize y dimension of the shape; could be height or y radius.
    * @param xCord x coordinate to place the shape.
    * @param yCord y coordinate to place the shape.
+   * @param width x dimension of the shape; could be width or x radius.
+   * @param height y dimension of the shape; could be height or y radius.
+   * @param color desired fill color.
    */
   @Override
-  public void add(String identifier, String kind, String color, double xSize, double ySize, double xCord, double yCord) {
+  public void add(String identifier, String kind, int xCord, int yCord,
+                  int width, int height, Color color) {
     if (identifier == null || identifier.isEmpty() || shapeMap.containsKey(identifier)) {
       throw new IllegalArgumentException("invalid identifier");
     }
     try {
-      IShape toAdd = ShapeFactory.create(identifier, kind, color, xSize, ySize, xCord, yCord);
+      IShape toAdd = ShapeFactory.create(identifier, kind, xCord, yCord, width, height, color);
       shapeMap.put(identifier, toAdd);
       allShapes.add(toAdd);
     }
@@ -64,7 +66,7 @@ public class ShapesAlbum implements IAlbum {
    * @param y destination y coordinate.
    */
   @Override
-  public void move(String identifier, double x, double y) {
+  public void move(String identifier, int x, int y) {
     IShape s = shapeMap.get(identifier);
     if (s == null) {
       return;
@@ -80,7 +82,7 @@ public class ShapesAlbum implements IAlbum {
    * @param ySize the desired new y dimension (>0).
    */
   @Override
-  public void resize(String identifier, double xSize, double ySize) {
+  public void resize(String identifier, int xSize, int ySize) {
     IShape s = shapeMap.get(identifier);
     if (s == null) {
       return;
@@ -96,7 +98,7 @@ public class ShapesAlbum implements IAlbum {
    * @throws IllegalArgumentException if identifier or color name is invalid.
    */
   @Override
-  public void changeColor(String identifier, String colorName) throws IllegalArgumentException {
+  public void changeColor(String identifier, Color colorName) throws IllegalArgumentException {
     IShape shape = this.shapeMap.get(identifier);
     if (shape == null) {
       return;

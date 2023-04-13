@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Color;
 import java.util.List;
 
 /**
@@ -9,15 +10,16 @@ public interface IAlbum {
   /**
    * add a shape into the album given a unique identifier and a set of shape properties.
    *
-   * @param identifier a unique name for the shape.
+   * @param name a unique name for the shape.
    * @param kind type of the shape.
    * @param color desired fill color.
-   * @param xSize x dimension of the shape; could be width or x radius.
-   * @param ySize y dimension of the shape; could be height or y radius.
+   * @param width x dimension of the shape; could be width or x radius.
+   * @param height y dimension of the shape; could be height or y radius.
    * @param xCord x coordinate to place the shape.
    * @param yCord y coordinate to place the shape.
    */
-  void add(String identifier, String kind, String color, double xSize, double ySize, double xCord, double yCord);
+  void add(String name, String kind, int xCord, int yCord,
+           int width, int height, Color color);
 
   /**
    * remove an object into the album along given a unique identifier.
@@ -34,7 +36,7 @@ public interface IAlbum {
    * @param x destination x coordinate.
    * @param y destination y coordinate.
    */
-  void move(String identifier, double x, double y);
+  void move(String identifier, int x, int y);
 
   /**
    * resize a shape in this album.
@@ -43,7 +45,7 @@ public interface IAlbum {
    * @param xSize the desired new x dimension (>0).
    * @param ySize the desired new y dimension (>0).
    */
-  void resize(String identifier, double xSize, double ySize);
+  void resize(String identifier, int xSize, int ySize);
 
   /**
    * change the color of an existing shape given its unique identifier.
@@ -52,7 +54,7 @@ public interface IAlbum {
    * @param colorName a string representing the name of the desired color.
    * @throws IllegalArgumentException if identifier or color name is invalid.
    */
-  void changeColor(String identifier, String colorName);
+  void changeColor(String identifier, Color colorName);
 
   /**
    * take a snapshot of all items in the album recording their current states.

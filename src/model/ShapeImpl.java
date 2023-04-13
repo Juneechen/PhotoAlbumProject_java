@@ -2,12 +2,14 @@ package model;
 
 import java.util.Objects;
 
+import java.awt.Color;
+
 /**
  * an abstract shape class.
  */
 public abstract class ShapeImpl implements IShape {
   protected String name;
-  protected double xDimension, yDimension;
+  protected int xDimension, yDimension;
   protected Point position;
   protected Color color;
 
@@ -18,19 +20,20 @@ public abstract class ShapeImpl implements IShape {
    *
    * @param name identifier of the shape.
    * @param color fill color.
-   * @param xSize x dimension (>0) of the shape; could be width or x radius.
-   * @param ySize y dimension (>0) of the shape; could be height or y radius.
+   * @param width x dimension (>0) of the shape; could be width or x radius.
+   * @param height y dimension (>0) of the shape; could be height or y radius.
    * @param xCord x coordinate of the bottom left corner or center.
    * @param yCord y coordinate of the bottom left corner or center.
    */
-  public ShapeImpl (String name, Color color, double xSize, double ySize, double xCord, double yCord) {
+  public ShapeImpl (String name, int xCord, int yCord,
+                    int width, int height, Color color) {
     //    if (colorName == null || colorName.isEmpty() || xSize <= 0 || ySize <= 0) {
     //      throw new IllegalArgumentException("invalid shape info.\n");
     //    }
     this.name = name;
     this.color = color;
-    this.xDimension = xSize;
-    this.yDimension = ySize;
+    this.xDimension = width;
+    this.yDimension = height;
     this.position = new Point(xCord, yCord);
   }
 
@@ -40,12 +43,12 @@ public abstract class ShapeImpl implements IShape {
   }
 
   @Override
-  public double getXDimension() {
+  public int getXDimension() {
     return this.xDimension;
   }
 
   @Override
-  public double getYDimension() {
+  public int getYDimension() {
     return this.yDimension;
   }
 
@@ -55,7 +58,7 @@ public abstract class ShapeImpl implements IShape {
   }
 
   @Override
-  public void setPosition(double x, double y) {
+  public void setPosition(int x, int y) {
     this.position = new Point(x, y);
   }
 
@@ -65,7 +68,7 @@ public abstract class ShapeImpl implements IShape {
   }
 
   @Override
-  public void resize(double x, double y) {
+  public void resize(int x, int y) {
     this.xDimension = x;
     this.yDimension = y;
   }

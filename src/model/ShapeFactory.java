@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Color;
+
 /**
  * A ShapeFactory that knows the supported types, colors and properties of shapes.
  * It generates and modifies shapes if all information are valid.
@@ -13,34 +15,34 @@ public class ShapeFactory {
    * @param name identifier of the shape.
    * @param kind type of the shape; current valid types: oval, rectangle.
    * @param color desired fill color.
-   * @param xSize x dimension (>0) of the shape; could be width or x radius.
-   * @param ySize y dimension (>0) of the shape; could be height or y radius.
+   * @param width x dimension (>0) of the shape; could be width or x radius.
+   * @param height y dimension (>0) of the shape; could be height or y radius.
    * @param xCord x coordinate of the bottom left corner or center.
    * @param yCord y coordinate of the bottom left corner or center.
    * @return the desired shape.
    * @throws IllegalArgumentException if any info is invalid.
    */
-  public static IShape create(String name, String kind, String color,
-                              double xSize, double ySize, double xCord, double yCord)
+  public static IShape create(String name, String kind, int xCord, int yCord,
+                              int width, int height, Color color)
                               throws IllegalArgumentException {
     // check for validity:
     if (kind == null || kind.isEmpty()) {
       throw new IllegalArgumentException("unknown shape type.\n");
     }
-    Color c = strToColor(color);
-    if (strToColor(color) == null) {
-      throw new IllegalArgumentException("invalid color.\n");
-    }
-    if (!isValidSize(xSize, ySize)) {
+//    Color c = strToColor(color);
+//    if (strToColor(color) == null) {
+//      throw new IllegalArgumentException("invalid color.\n");
+//    }
+    if (!isValidSize(width, height)) {
       throw new IllegalArgumentException("invalid shape size.\n");
     }
 
     // identify the type of shape to create:
     if (kind.equalsIgnoreCase("Oval")) {
-          return new Oval(name, c, xSize, ySize, xCord, yCord);
+          return new Oval(name, xCord, yCord, width, height, color);
     }
     if (kind.equalsIgnoreCase("Rectangle")) {
-      return new Rectangle(name, c, xSize, ySize, xCord, yCord);
+      return new Rectangle(name, xCord, yCord, width, height, color);
     }
     // else, unknown type
     throw new IllegalArgumentException("unknown type");
@@ -52,7 +54,7 @@ public class ShapeFactory {
    * @param newX desired x dimension.
    * @param newY desired y dimension.
    */
-  public static void changeSize(IShape shape, double newX, double newY) {
+  public static void changeSize(IShape shape, int newX, int newY) {
     if (!isValidSize(newX, newY)) {
       return;
     }
@@ -64,12 +66,8 @@ public class ShapeFactory {
    * @param shape the shape object to be changed.
    * @param newColor name of the desired color.
    */
-  public static void changeColor(IShape shape, String newColor) {
-    Color newC = strToColor(newColor);
-    if (newC == null) {
-      return;
-    }
-    shape.setColor(newC);
+  public static void changeColor(IShape shape, Color newColor) {
+    shape.setColor(newColor);
   }
 
   /**
@@ -78,16 +76,16 @@ public class ShapeFactory {
    * @param name name of the color.
    * @return the corresponding Color if the name represents a known color, null otherwise.
    */
-  private static Color strToColor(String name) {
-    if (name == null) {
-      return null;
-    }
-    try {
-      return Color.valueOf(name.toUpperCase());
-    } catch (IllegalArgumentException e) {
-      return null;
-    }
-  }
+//  private static Color strToColor(String name) {
+//    if (name == null) {
+//      return null;
+//    }
+//    try {
+//      return Color.valueOf(name.toUpperCase());
+//    } catch (IllegalArgumentException e) {
+//      return null;
+//    }
+//  }
 
   /**
    * answer whether a given set of dimensions is valid.
@@ -96,7 +94,7 @@ public class ShapeFactory {
    * @param y y dimension (>0) of the shape; could be height or y radius.
    * @return true if both are greater than 0, false otherwise.
    */
-  private static boolean isValidSize(double x, double y) {
+  private static boolean isValidSize(int x, int y) {
     return (x > 0 && y > 0);
   }
 }
