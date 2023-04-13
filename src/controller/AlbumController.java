@@ -1,24 +1,26 @@
 package controller;
 
-import java.awt.*;
-import java.util.ArrayList;
+import java.awt.Color;
 import java.util.List;
 import java.util.Scanner;
 
 import model.IAlbum;
 import model.IShape;
-import model.Snapshot;
+import model.IShapeVisitor;
 import views.IView;
 
-public class AlbumController implements IController, Features {
+public class AlbumController implements IController, Features, IShapeVisitor {
   private IAlbum model;
   private IView view;
   private Readable in;
+  private int iteratorIdx = 0;
+  private int size;
 
   public AlbumController(Readable r, IAlbum model, IView view) {
     this.model = model;
     this.view = view;
     this.in = r;
+    size = model.getSnapshots().size();
     view.addFeatures(this);
   }
 
@@ -29,6 +31,10 @@ public class AlbumController implements IController, Features {
     //TODO: delete test:
     System.out.println(this.model.toString());
     System.out.println(this.model.getSnapshots().toString());
+
+    if (size > 0) {
+      this.getSnapshot(0); // send the first snapshot to the View
+    }
 
     this.view.display();
 
@@ -43,11 +49,74 @@ public class AlbumController implements IController, Features {
     System.exit(0);
   }
 
-  public void displaySnapshot() {
-    List<IShape> shapes = model.getSnapshots().get(0).getShapes();
-    List<String> shapesInfo = new ArrayList<>();
-    shapesInfo.add("oval 20 20 120 80 248 213 131");
-    this.view.showSnapshot(shapesInfo);
+//  @Override
+//  public void selectSnapshot(String id) {
+//    this.model.getSnapshotWithID(id);
+//  }
+
+  @Override
+  public List<String> getSelectionItems() {
+    return model.getSnapshotIDs();
+  }
+
+  /**
+   * requested by the view to retrieve a snapshot by index;
+   * instead of sending the View the actual Snapshot object,
+   * send over strings representing the spec of each shape contained in the snapshot.
+   * @param idx
+   */
+  @Override
+  public void getSnapshot(int idx) {
+    this.iteratorIdx = idx; // keeps track of the index of the snapshot displaying
+    this.view.clear(); // clear the view before adding shapes for this snapshot
+
+
+    List<IShape> shapes = model.getSnapshots().get(idx).getShapes();
+
+    // visit, parse, and add spec of each shape to view
+    for (IShape each : shapes) {
+      each.accept(this);
+    }
+
+    // retrieve the snapshot id and description, ask view to update infoPane with this info.
+    String snapshotInfo = model.getSnapshots().get(idx).getId() + "\n"
+                          + model.getSnapshots().get(idx).getDescription();
+
+    this.view.updateInfoPane(snapshotInfo);
+
+    // this.view.refresh();
+
+    // TODO: delete
+    // shapesInfo.add("oval 20 20 120 80 248 213 131");
+
+    // this.view.showSnapshot(shapesInfo);
+  }
+
+  /**
+   * parse an IShape into a String of spec, then send it over to the View.
+   * @param type type detected by the IShape visitor with the visit() method.
+   * @param shape the actual shape object to parse.
+   */
+  private void parseShape(String type, IShape shape) {
+    StringBuilder info = new StringBuilder(type);
+
+    info.append(shape.getPosition().getX()).append(shape.getPosition().getY());
+    info.append(shape.getXDimension()).append(shape.getYDimension());
+    Color c = shape.getColor();
+    info.append(c.getRed()).append(c.getGreen()).append(c.getBlue());
+
+    this.view.addShape(info.toString());
+  }
+
+
+  @Override
+  public void visit(model.Rectangle rect) {
+    parseShape("rectangle", rect);
+  }
+
+  @Override
+  public void visit(model.Oval oval) {
+    parseShape("oval", oval);
   }
 
   /**
