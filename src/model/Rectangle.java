@@ -2,6 +2,8 @@ package model;
 
 import java.awt.Color;
 
+import controller.IShapeVisitor;
+
 public class Rectangle extends ShapeImpl {
   /**
    * Construct a Rectangle object with the given parameters, assume all info are valid.
@@ -23,6 +25,11 @@ public class Rectangle extends ShapeImpl {
   public IShape copy() {
     return new Rectangle(this.name, this.position.getX(), this.position.getY(),
             this.xDimension, this.yDimension, this.color);
+  }
+
+  @Override
+  public void accept(IShapeVisitor visitor) {
+    visitor.visit(this);
   }
 
   @Override

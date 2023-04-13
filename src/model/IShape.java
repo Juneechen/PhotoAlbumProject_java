@@ -2,6 +2,8 @@ package model;
 
 import java.awt.Color;
 
+import controller.IShapeVisitor;
+
 /**
  * an IShape interface for the ShapeAlbum.
  */
@@ -66,4 +68,6 @@ public interface IShape {
    * @return a deep copy of the shape.
    */
   IShape copy();
+
+  void accept(IShapeVisitor visitor);
 }

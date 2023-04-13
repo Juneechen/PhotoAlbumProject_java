@@ -2,6 +2,8 @@ package model;
 
 import java.awt.Color;
 
+import controller.IShapeVisitor;
+
 public class Oval extends ShapeImpl {
   /**
    * Construct an Oval object with the given parameters, assume all info are valid.
@@ -23,6 +25,11 @@ public class Oval extends ShapeImpl {
   public IShape copy() {
     return new Oval(this.name, this.position.getX(), this.position.getY(),
             this.xDimension, this.yDimension, this.color);
+  }
+
+  @Override
+  public void accept(IShapeVisitor visitor) {
+    visitor.visit(this);
   }
 
   @Override
