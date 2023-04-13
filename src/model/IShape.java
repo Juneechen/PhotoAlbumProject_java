@@ -2,8 +2,6 @@ package model;
 
 import java.awt.Color;
 
-import controller.IShapeVisitor;
-
 /**
  * an IShape interface for the ShapeAlbum.
  */
