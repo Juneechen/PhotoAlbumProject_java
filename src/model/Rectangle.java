@@ -2,8 +2,6 @@ package model;
 
 import java.awt.Color;
 
-import controller.IShapeVisitor;
-
 public class Rectangle extends ShapeImpl {
   /**
    * Construct a Rectangle object with the given parameters, assume all info are valid.
