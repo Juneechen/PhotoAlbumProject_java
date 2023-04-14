@@ -50,6 +50,8 @@ public class AlbumController implements IController, Features, IShapeVisitor {
     int nextInd = iteratorIdx + 1;
     if (nextInd < size) {
       this.getSnapshot(nextInd); // this method updates iteratorIdx with the given value
+    } else {
+      this.view.showPopUpMsg("End of the photo album. No snapshots to show beyond this one.");
     }
     this.view.resetFocus();
   }
@@ -58,6 +60,8 @@ public class AlbumController implements IController, Features, IShapeVisitor {
   public void getPrev() {
     if (iteratorIdx > 0) {
       this.getSnapshot(iteratorIdx - 1); // this method updates iteratorIdx with the given value
+    } else {
+      this.view.showPopUpMsg("Start of the photo album. No snapshots to show before this one.");
     }
     this.view.resetFocus();
   }

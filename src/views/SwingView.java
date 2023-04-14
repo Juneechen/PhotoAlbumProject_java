@@ -85,6 +85,11 @@ public class SwingView extends JFrame implements IView {
   }
 
   @Override
+  public void showPopUpMsg(String msg) {
+    JOptionPane.showMessageDialog(SwingView.this, msg);
+  }
+
+  @Override
   public void updateInfoPane(String text) {
     text = "<html>" + text + "<html>";
     text = text.replaceAll("\n", "<br>");
@@ -116,14 +121,11 @@ public class SwingView extends JFrame implements IView {
     prev.addActionListener(l -> features.getPrev());
     next.addActionListener(l -> features.getNext());
 
+    // add key-binding for all buttons
     this.addKeyListener(
             new KeyListener() {
               @Override
-              public void keyTyped(KeyEvent e) {
-//                if (e.getKeyChar() == 'q' || e.getKeyChar() == 'Q') {
-//                  features.exit();
-//                }
-              }
+              public void keyTyped(KeyEvent e) { }
 
               @Override
               public void keyPressed(KeyEvent e) {
@@ -145,9 +147,7 @@ public class SwingView extends JFrame implements IView {
               }
 
               @Override
-              public void keyReleased(KeyEvent e) {
-
-              }
+              public void keyReleased(KeyEvent e) { }
             }
     );
   }
