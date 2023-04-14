@@ -1,6 +1,5 @@
 package model;
 
-import java.awt.*;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +13,6 @@ import java.util.stream.Collectors;
  */
 public class ShapesAlbum implements IAlbum {
   private Map<String, IShape> shapeMap = new HashMap<>();
-  // private Map<String, Snapshot> snapshotMap = new HashMap<>();
   private List<IShape> allShapes = new ArrayList<>();
   private List<Snapshot> snapshots = new ArrayList<>();
 
@@ -143,11 +141,6 @@ public class ShapesAlbum implements IAlbum {
   public List<String> getSnapshotIDs() {
     return snapshots.stream().map(Snapshot::getId).collect(Collectors.toList());
   }
-//
-//  @Override
-//  public Snapshot getSnapshotWithID(String id) {
-//    return snapshotMap.get(id);
-//  }
 
   /**
    * delete all snapshots.

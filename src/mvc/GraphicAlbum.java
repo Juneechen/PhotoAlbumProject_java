@@ -30,6 +30,5 @@ public class GraphicAlbum {
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
-
   }
 }

@@ -89,6 +89,11 @@ public class SwingView extends JFrame implements IView {
     JOptionPane.showMessageDialog(SwingView.this, msg);
   }
 
+  private void showPopUpDialogWithComponent(String title, JComponent component) {
+    JOptionPane.showMessageDialog(SwingView.this, component, title, JOptionPane.PLAIN_MESSAGE);
+    component.requestFocus();
+  }
+
   @Override
   public void updateInfoPane(String text) {
     text = "<html>" + text + "<html>";
@@ -114,8 +119,7 @@ public class SwingView extends JFrame implements IView {
     selectionBox.addActionListener(l -> features.getSnapshot(selectionBox.getSelectedIndex()));
 
     // add select button action: bring up a message dialog, with the selection box in it
-    select.addActionListener(l -> { JOptionPane.showMessageDialog(SwingView.this,
-            selectionBox, "Select a snapshot", JOptionPane.PLAIN_MESSAGE); });
+    select.addActionListener(l -> showPopUpDialogWithComponent("Select a snapshot", selectionBox));
 
     // add prev and next button action:
     prev.addActionListener(l -> features.getPrev());
@@ -141,8 +145,7 @@ public class SwingView extends JFrame implements IView {
                   features.getNext();
                 }
                 if (e.getKeyCode()==KeyEvent.VK_S) {
-                  JOptionPane.showMessageDialog(SwingView.this,
-                          selectionBox, "Select a snapshot", JOptionPane.PLAIN_MESSAGE);
+                  showPopUpDialogWithComponent("Select a snapshot", selectionBox);
                 }
               }
 
