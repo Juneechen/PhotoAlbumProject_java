@@ -1,29 +1,33 @@
 package views;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.*;
-
 import controller.Features;
+import model.IShape;
 
+/**
+ * a Swing view for the shapeAlbum. Capable of displaying snapshots/pages from the album.
+ */
 public class SwingView extends JFrame implements IView {
   public static final int WIDTH = 800;
   public static final int HEIGHT = 800;
   private JLabel infoPane;
-  private Canvas graphicPane;
-  private JPanel buttonsPane;
-  private JButton prev;
-  private JButton next;
-  private JButton select;
-  private JComboBox<String> selectionBox = new JComboBox<>();
-  private JButton quit;
+  private final DrawPanel graphicPane = new DrawPanel();;
+  private final JButton prev = new JButton("previous");;
+  private final JButton next = new JButton("next");;
+  private final JButton quit = new JButton("quit");
+  private final JButton select = new JButton("select");
+  private JComboBox<String> dropdownMenu = new JComboBox<>();
 
   public SwingView(String title) {
     super(title); // set the tile of this frame
     setUpPane();
-    pack();
+    pack(); // layout setup to fit all components
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
@@ -37,14 +41,8 @@ public class SwingView extends JFrame implements IView {
    *
    */
   private void setUpPane() {
-    // make buttons
-    prev = new JButton("previous");
-    next = new JButton("next");
-    select = new JButton("select");
-    quit = new JButton("quit");
-
     // setup buttons pane and add buttons to it
-    buttonsPane = new JPanel(new FlowLayout());
+    JPanel buttonsPane = new JPanel(new FlowLayout());
     buttonsPane.add(prev);
     buttonsPane.add(next);
     buttonsPane.add(select);
@@ -58,10 +56,9 @@ public class SwingView extends JFrame implements IView {
     infoPane.setPreferredSize(new Dimension(WIDTH, 45));
 
     // setup graphic pane for displaying snapshot
-    graphicPane = new Canvas();
     this.graphicPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
-    // add the above components to default panel
+    // add the above components to default panel / main window
     this.add(infoPane, BorderLayout.PAGE_START);
     this.add(graphicPane, BorderLayout.CENTER);
     this.add(buttonsPane, BorderLayout.PAGE_END);
@@ -80,50 +77,52 @@ public class SwingView extends JFrame implements IView {
   }
 
   @Override
-  public void addShape(String info) {
-    graphicPane.addShape(info);
-  }
-
-  @Override
-  public void showPopUpMsg(String msg) {
-    JOptionPane.showMessageDialog(SwingView.this, msg);
-  }
-
-  private void showPopUpDialogWithComponent(String title, JComponent component) {
-    JOptionPane.showMessageDialog(SwingView.this, component, title, JOptionPane.PLAIN_MESSAGE);
-    component.requestFocus();
+  public void renderShape(IShape shape) {
+    this.graphicPane.addComponent(shape); // add to graphic pane's component for repaint
   }
 
   @Override
   public void updateInfoPane(String text) {
     text = "<html>" + text + "<html>";
-    text = text.replaceAll("\n", "<br>");
+    text = text.replaceAll("\n", "<br>"); // to make new line show up properly
     this.infoPane.setText(text);
   }
 
+
   @Override
   public void refresh() {
-    graphicPane.repaint();
+    this.graphicPane.repaint();
+  }
+
+  @Override
+  public void showPopUp(String msg) {
+    JOptionPane.showMessageDialog(SwingView.this, msg);
+  }
+
+  /**
+   * show a popup dialog with the given title message and the given component in it.
+   * @param title of the dialog box.
+   * @param component contained in the dialog box.
+   */
+  private void showPopUpWithComponent(String title, JComponent component) {
+    JOptionPane.showMessageDialog(SwingView.this, component, title, JOptionPane.PLAIN_MESSAGE);
   }
 
   @Override
   public void addFeatures(Features features) {
-    quit.addActionListener(l -> features.exit());
-
-    // request from controller the list of options for selection menu
-    String[] selections = features.getSelectionOptions().toArray(new String[0]);
-    selectionBox = new JComboBox<>(selections); // make selection box and put in options
-
-    // add on-selection action:
-    // request snapshot info from Controller, then repaint all
-    selectionBox.addActionListener(l -> features.getSnapshot(selectionBox.getSelectedIndex()));
-
-    // add select button action: bring up a message dialog, with the selection box in it
-    select.addActionListener(l -> showPopUpDialogWithComponent("Select a snapshot", selectionBox));
-
-    // add prev and next button action:
     prev.addActionListener(l -> features.getPrev());
     next.addActionListener(l -> features.getNext());
+    quit.addActionListener(l -> features.exit());
+
+    // request from Controller the list of drop-down options
+    String[] selections = features.getSelectionOptions().toArray(new String[0]);
+    dropdownMenu = new JComboBox<>(selections); // make selection box and put in options
+
+    // on-selection action: request snapshot from Controller, then repaint
+    dropdownMenu.addActionListener(l -> features.getSnapshot(dropdownMenu.getSelectedIndex()));
+
+    // select button action: bring up a pop-up dialog, with the selection box in it
+    select.addActionListener(l -> showPopUpWithComponent("Select a snapshot", dropdownMenu));
 
     // add key-binding for all buttons
     this.addKeyListener(
@@ -137,15 +136,13 @@ public class SwingView extends JFrame implements IView {
                   features.exit();
                 }
                 if (e.getKeyCode()==KeyEvent.VK_P) {
-                  System.out.println("P pressed");
                   features.getPrev();
                 }
                 if (e.getKeyCode()==KeyEvent.VK_N) {
-                  System.out.println("N pressed");
                   features.getNext();
                 }
                 if (e.getKeyCode()==KeyEvent.VK_S) {
-                  showPopUpDialogWithComponent("Select a snapshot", selectionBox);
+                  showPopUpWithComponent("Select a snapshot", dropdownMenu);
                 }
               }
 
@@ -158,6 +155,5 @@ public class SwingView extends JFrame implements IView {
   @Override
   public void clear() {
     this.graphicPane.reset();
-    //graphicPane.getGraphics().clearRect(0, 0, graphicPane.getWidth(), graphicPane.getHeight());
   }
 }

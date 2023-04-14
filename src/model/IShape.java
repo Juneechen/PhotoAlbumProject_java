@@ -2,6 +2,8 @@ package model;
 
 import java.awt.Color;
 
+import views.IShapeVisitor;
+
 /**
  * an IShape interface for the ShapeAlbum.
  */
@@ -18,14 +20,14 @@ public interface IShape {
    *
    * @return x dimension of the shape; could be width or x radius.
    */
-  int getXDimension();
+  int getWidth();
 
   /**
    * return the y dimension of the shape.
    *
    * @return y dimension of the shape; could be height or y radius.
    */
-  int getYDimension();
+  int getHeight();
 
   /**
    * return the position of the shape.
@@ -33,6 +35,20 @@ public interface IShape {
    * @return a 2D Point representing a shape's position.
    */
   Point getPosition();
+
+  /**
+   * return the x coordinate of the shape.
+   *
+   * @return x coordinate of the shape.
+   */
+  int getX();
+
+  /**
+   * return the y coordinate of the shape.
+   *
+   * @return y coordinate of the shape.
+   */
+  int getY();
 
   /**
    * move the shape to the target position.
