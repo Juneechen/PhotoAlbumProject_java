@@ -21,7 +21,7 @@ public class GraphicAlbum {
 
     // TODO: change to taking command line args
     try {
-      File file = new File("demo_input.txt");
+      File file = new File("buildings.txt");
       FileReader reader = new FileReader(file);
 
       IController controller = new AlbumController(reader, model, view);

@@ -9,8 +9,8 @@ import javax.swing.*;
 import controller.Features;
 
 public class SwingView extends JFrame implements IView {
-  public static final int WIDTH = 600;
-  public static final int HEIGHT = 600;
+  public static final int WIDTH = 800;
+  public static final int HEIGHT = 800;
   private JLabel infoPane;
   private Canvas graphicPane;
   private JPanel buttonsPane;
@@ -19,84 +19,53 @@ public class SwingView extends JFrame implements IView {
   private JButton select;
   private JComboBox<String> selectionBox = new JComboBox<>();
   private JButton quit;
-  private JButton testclear;
-  private JButton testdrawOval;
 
   public SwingView(String title) {
-    super(title);
-    super.setSize(WIDTH, HEIGHT);
+    super(title); // set the tile of this frame
     setUpPane();
-
+    pack();
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-    // pack();
   }
 
+  /**
+   * set up the look and feel of all components in this frame:
+   * - an info panel at the top, for displaying snapshot id and description;
+   * - a graphic panel at the center, for rendering and displaying snapshot.
+   * - buttons;
+   * - a panel for buttons;
+   * - pop-up selection box from buttons.
+   *
+   */
   private void setUpPane() {
     // make buttons
     prev = new JButton("previous");
     next = new JButton("next");
     select = new JButton("select");
     quit = new JButton("quit");
-    // TODO: delete test items
-    testclear = new JButton("test clear");
-    testdrawOval = new JButton("test draw oval");
 
-
-    // make buttons pane and add buttons
+    // setup buttons pane and add buttons to it
     buttonsPane = new JPanel(new FlowLayout());
     buttonsPane.add(prev);
     buttonsPane.add(next);
     buttonsPane.add(select);
     buttonsPane.add(quit);
-    // TODO: delete test items
-    buttonsPane.add(testclear);
-    buttonsPane.add(testdrawOval);
 
-    // make info pane shown on the top for snapshot info
+    // setup info pane shown on the top for snapshot info
     infoPane = new JLabel("snapshot info");
-//     infoPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    infoPane.setBorder(BorderFactory.createMatteBorder(10, 15, 10, 15, new Color(160, 200, 160)));
+    infoPane.setBorder(BorderFactory.createEmptyBorder(5, 7, 5, 7));
     infoPane.setOpaque(true);
-    infoPane.setBackground(new Color(248, 213, 131));
-    infoPane.setPreferredSize(new Dimension(WIDTH, 50));
+    infoPane.setBackground(new Color(245, 213, 131));
+    infoPane.setPreferredSize(new Dimension(WIDTH, 45));
 
-    // make graphic pane for displaying snapshot
+    // setup graphic pane for displaying snapshot
     graphicPane = new Canvas();
-//    graphicPane = new JPanel() {
-//      @Override
-//      protected void paintComponent(Graphics g) {
-//        super.paintComponent(g);
-//        g.setColor(Color.PINK);
-//        g.fillOval(20, 20, 120, 80);
-//      }
-//    };
-
-//    graphicPane.setOpaque(true);
-//    graphicPane.setBackground(new Color(60, 120, 120));
-    // graphicPane.setPreferredSize(new Dimension(WIDTH, HEIGHT-150));
+    this.graphicPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
     // add the above components to default panel
     this.add(infoPane, BorderLayout.PAGE_START);
     this.add(graphicPane, BorderLayout.CENTER);
     this.add(buttonsPane, BorderLayout.PAGE_END);
   }
-//
-//  @Override
-//  public void showSnapshot(List<String> info) {
-//    this.graphicPane.renderSnapshot(info);
-//  }
-
-//  @Override
-//  public void showShapes(List<IShape> shapes) {
-//
-//  }
-
-//  @Override
-//  public void showShapes(List<IShape> shapes) {
-//    this.graphicPane.renderShapes(shapes);
-//
-//  }
 
   @Override
   public void display() {
@@ -117,11 +86,13 @@ public class SwingView extends JFrame implements IView {
 
   @Override
   public void updateInfoPane(String text) {
+    text = "<html>" + text + "<html>";
+    text = text.replaceAll("\n", "<br>");
     this.infoPane.setText(text);
   }
 
   @Override
-  public void paintComponents() {
+  public void refresh() {
     graphicPane.repaint();
   }
 
@@ -129,21 +100,21 @@ public class SwingView extends JFrame implements IView {
   public void addFeatures(Features features) {
     quit.addActionListener(l -> features.exit());
 
-    // request from controller the list of items for selection menu, put them into selection box
-    String[] selections = features.getSelectionItems().toArray(new String[0]);
-    selectionBox = new JComboBox<>(selections);
+    // request from controller the list of options for selection menu
+    String[] selections = features.getSelectionOptions().toArray(new String[0]);
+    selectionBox = new JComboBox<>(selections); // make selection box and put in options
 
-    // add on-selection action: request snapshot info from Controller, then paint all
-    selectionBox.addActionListener(l -> { features.getSnapshot(selectionBox.getSelectedIndex());
-                                          this.paintComponents(); });
+    // add on-selection action:
+    // request snapshot info from Controller, then repaint all
+    selectionBox.addActionListener(l -> features.getSnapshot(selectionBox.getSelectedIndex()));
 
     // add select button action: bring up a message dialog, with the selection box in it
-    select.addActionListener(l -> JOptionPane.showMessageDialog(SwingView.this,
-            selectionBox, "Select an snapshot", JOptionPane.PLAIN_MESSAGE));
+    select.addActionListener(l -> { JOptionPane.showMessageDialog(SwingView.this,
+            selectionBox, "Select a snapshot", JOptionPane.PLAIN_MESSAGE); });
 
-    // TODO: delete test items
-    testclear.addActionListener(l -> this.clear());
-    testdrawOval.addActionListener(l -> this.drawOval());
+    // add prev and next button action:
+    prev.addActionListener(l -> features.getPrev());
+    next.addActionListener(l -> features.getNext());
 
     this.addKeyListener(
             new KeyListener() {
@@ -159,6 +130,18 @@ public class SwingView extends JFrame implements IView {
                 if (e.getKeyCode()==KeyEvent.VK_Q) {
                   features.exit();
                 }
+                if (e.getKeyCode()==KeyEvent.VK_P) {
+                  System.out.println("P pressed");
+                  features.getPrev();
+                }
+                if (e.getKeyCode()==KeyEvent.VK_N) {
+                  System.out.println("N pressed");
+                  features.getNext();
+                }
+                if (e.getKeyCode()==KeyEvent.VK_S) {
+                  JOptionPane.showMessageDialog(SwingView.this,
+                          selectionBox, "Select a snapshot", JOptionPane.PLAIN_MESSAGE);
+                }
               }
 
               @Override
@@ -171,12 +154,7 @@ public class SwingView extends JFrame implements IView {
 
   @Override
   public void clear() {
-    graphicPane.getGraphics().clearRect(0, 0, graphicPane.getWidth(), graphicPane.getHeight());
-  }
-
-  public void drawOval() {
-    Graphics g = graphicPane.getGraphics();
-    g.setColor(Color.PINK);
-    g.fillOval(20, 20, 120, 80);
+    this.graphicPane.reset();
+    //graphicPane.getGraphics().clearRect(0, 0, graphicPane.getWidth(), graphicPane.getHeight());
   }
 }

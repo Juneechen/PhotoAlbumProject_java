@@ -1,7 +1,5 @@
 package views;
 
-import java.util.List;
-
 import controller.Features;
 
 public interface IView {
@@ -9,7 +7,7 @@ public interface IView {
   void resetFocus();
   void addShape(String info);
   void updateInfoPane(String text);
-  void paintComponents();
+  void refresh();
   //void showSnapshot(List<String> info);
 //  void showShapes(List<IShape> shapes);
   void addFeatures(Features features);

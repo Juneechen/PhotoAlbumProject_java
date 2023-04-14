@@ -4,7 +4,8 @@ import java.util.List;
 
 public interface Features {
   void exit();
-  // void selectSnapshot(String id);
+  void getNext();
+  void getPrev();
   void getSnapshot(int i);
-  List<String> getSelectionItems();
+  List<String> getSelectionOptions();
 }

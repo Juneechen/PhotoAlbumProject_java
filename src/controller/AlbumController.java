@@ -45,6 +45,23 @@ public class AlbumController implements IController, Features, IShapeVisitor {
     return model.getSnapshotIDs();
   }
 
+  @Override
+  public void getNext() {
+    int nextInd = iteratorIdx + 1;
+    if (nextInd < size) {
+      this.getSnapshot(nextInd); // this method updates iteratorIdx with the given value
+    }
+    this.view.resetFocus();
+  }
+
+  @Override
+  public void getPrev() {
+    if (iteratorIdx > 0) {
+      this.getSnapshot(iteratorIdx - 1); // this method updates iteratorIdx with the given value
+    }
+    this.view.resetFocus();
+  }
+
   /**
    * requested by the view to retrieve a snapshot by index;
    * instead of sending the View the actual Snapshot object,
@@ -53,7 +70,9 @@ public class AlbumController implements IController, Features, IShapeVisitor {
    */
   @Override
   public void getSnapshot(int idx) {
-    this.iteratorIdx = idx; // keeps track of the index of the snapshot displaying
+    this.iteratorIdx = idx; // update to keep track of the index of the snapshot displaying
+    this.view.clear(); // clear the View before sending over new shapes to display
+
     List<IShape> shapes = model.getSnapshots().get(idx).getShapes();
 
     // visit, parse, and add spec of each shape to view
@@ -61,11 +80,13 @@ public class AlbumController implements IController, Features, IShapeVisitor {
       each.accept(this);
     }
 
+    this.view.refresh(); // repaint all
+
     // retrieve the snapshot id and description, ask view to update infoPane with this info.
     String snapshotInfo = model.getSnapshots().get(idx).getId() + "\n"
                           + model.getSnapshots().get(idx).getDescription();
-
     this.view.updateInfoPane(snapshotInfo);
+    this.view.resetFocus();
   }
 
   /**
