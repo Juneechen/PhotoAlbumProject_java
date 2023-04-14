@@ -9,7 +9,7 @@ import java.awt.Color;
  */
 public abstract class ShapeImpl implements IShape {
   protected String name;
-  protected int xDimension, yDimension;
+  protected int width, height;
   protected Point position;
   protected Color color;
 
@@ -32,8 +32,8 @@ public abstract class ShapeImpl implements IShape {
     //    }
     this.name = name;
     this.color = color;
-    this.xDimension = width;
-    this.yDimension = height;
+    this.width = width;
+    this.height = height;
     this.position = new Point(xCord, yCord);
   }
 
@@ -43,18 +43,28 @@ public abstract class ShapeImpl implements IShape {
   }
 
   @Override
-  public int getXDimension() {
-    return this.xDimension;
+  public int getWidth() {
+    return this.width;
   }
 
   @Override
-  public int getYDimension() {
-    return this.yDimension;
+  public int getHeight() {
+    return this.height;
   }
 
   @Override
   public Point getPosition() {
     return this.position;
+  }
+
+  @Override
+  public int getX() {
+    return this.getPosition().getX();
+  }
+
+  @Override
+  public int getY() {
+    return this.getPosition().getY();
   }
 
   @Override
@@ -69,13 +79,13 @@ public abstract class ShapeImpl implements IShape {
 
   @Override
   public void resize(int x, int y) {
-    this.xDimension = x;
-    this.yDimension = y;
+    this.width = x;
+    this.height = y;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.name, this.xDimension, this.yDimension, this.position, this.color);
+    return Objects.hash(this.name, this.width, this.height, this.position, this.color);
   }
 
   @Override
@@ -87,8 +97,8 @@ public abstract class ShapeImpl implements IShape {
       return false;
     }
     ShapeImpl o = (ShapeImpl) obj;
-    return this.name.equals(o.name) && Double.compare(this.xDimension, o.xDimension) == 0
-            && Double.compare(this.yDimension, o.yDimension) == 0
+    return this.name.equals(o.name) && Double.compare(this.width, o.width) == 0
+            && Double.compare(this.height, o.height) == 0
             && this.position.equals(o.position)
             && this.color.equals(o.color);
   }
