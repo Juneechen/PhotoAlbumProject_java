@@ -31,16 +31,6 @@ public class DrawPanel extends JPanel implements IShapeVisitor {
     this.shapes.add(shape);
   }
 
-  private void render(Rectangle rec) {
-    pen.setColor(rec.getColor());
-    pen.fillRect(rec.getX(), rec.getY(), rec.getWidth(), rec.getHeight());
-  }
-
-  private void render(Oval oval) {
-    pen.setColor(oval.getColor());
-    pen.fillOval(oval.getX(), oval.getY(), oval.getWidth(), oval.getHeight());
-  }
-
   public void reset() {
     this.shapes = new ArrayList<>();
     this.getGraphics().clearRect(0, 0, this.getWidth(), this.getHeight());
@@ -48,12 +38,14 @@ public class DrawPanel extends JPanel implements IShapeVisitor {
 
   @Override
   public void visit(Rectangle rect) {
-    render(rect);
+    pen.setColor(rect.getColor());
+    pen.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
   }
 
   @Override
   public void visit(Oval oval) {
-    render(oval);
+    pen.setColor(oval.getColor());
+    pen.fillOval(oval.getX(), oval.getY(), oval.getWidth(), oval.getHeight());
   }
 
   @Override
