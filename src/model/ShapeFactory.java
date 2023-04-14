@@ -33,7 +33,7 @@ public class ShapeFactory {
 //    if (strToColor(color) == null) {
 //      throw new IllegalArgumentException("invalid color.\n");
 //    }
-    if (!isValidSize(width, height)) {
+    if (invalidSize(width, height)) {
       throw new IllegalArgumentException("invalid shape size.\n");
     }
 
@@ -55,7 +55,7 @@ public class ShapeFactory {
    * @param newY desired y dimension.
    */
   public static void changeSize(IShape shape, int newX, int newY) {
-    if (!isValidSize(newX, newY)) {
+    if (invalidSize(newX, newY)) {
       return;
     }
     shape.resize(newX, newY);
@@ -94,7 +94,7 @@ public class ShapeFactory {
    * @param y y dimension (>0) of the shape; could be height or y radius.
    * @return true if both are greater than 0, false otherwise.
    */
-  private static boolean isValidSize(int x, int y) {
-    return (x > 0 && y > 0);
+  private static boolean invalidSize(int x, int y) {
+    return (x <= 0 || y <= 0);
   }
 }
