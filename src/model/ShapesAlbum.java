@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.*;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -115,8 +116,10 @@ public class ShapesAlbum implements IAlbum {
    */
   @Override
   public void takeSnapshot(String note) {
+    List<IShape> temp = new ArrayList<>();
+    this.allShapes.forEach(s -> temp.add(s.copy()));
 
-    Snapshot toAdd = new Snapshot(note, this.allShapes);
+    Snapshot toAdd = new Snapshot(note, temp);
     this.snapshots.add(toAdd);
     // this.snapshotMap.put(toAdd.getId(), toAdd);
   }
