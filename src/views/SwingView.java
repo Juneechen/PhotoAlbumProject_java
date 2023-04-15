@@ -14,18 +14,21 @@ import model.IShape;
  * a Swing view for the shapeAlbum. Capable of displaying snapshots/pages from the album.
  */
 public class SwingView extends JFrame implements IView {
-  public static final int WIDTH = 800;
-  public static final int HEIGHT = 800;
-  private JLabel infoPane;
-  private final DrawPanel graphicPane = new DrawPanel();;
-  private final JButton prev = new JButton("previous");;
-  private final JButton next = new JButton("next");;
+  public final int canvasWidth;
+  public final int canvasHeight;
+  private final DrawPanel graphicPane = new DrawPanel();
+  private final JButton prev = new JButton("previous");
+  private final JButton next = new JButton("next");
   private final JButton quit = new JButton("quit");
   private final JButton select = new JButton("select");
+  private JLabel infoPane;
   private JComboBox<String> dropdownMenu = new JComboBox<>();
 
-  public SwingView(String title) {
+  public SwingView(String title, int w, int h) {
     super(title); // set the tile of this frame
+    this.canvasWidth = w;
+    this.canvasHeight = h;
+
     setUpPane();
     pack(); // layout setup to fit all components
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,10 +56,10 @@ public class SwingView extends JFrame implements IView {
     infoPane.setBorder(BorderFactory.createEmptyBorder(5, 7, 5, 7));
     infoPane.setOpaque(true);
     infoPane.setBackground(new Color(245, 213, 131));
-    infoPane.setPreferredSize(new Dimension(WIDTH, 45));
+    infoPane.setPreferredSize(new Dimension(canvasWidth, 45));
 
     // setup graphic pane for displaying snapshot
-    this.graphicPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+    this.graphicPane.setPreferredSize(new Dimension(canvasWidth, canvasHeight));
 
     // add the above components to default panel / main window
     this.add(infoPane, BorderLayout.PAGE_START);
@@ -67,12 +70,6 @@ public class SwingView extends JFrame implements IView {
   @Override
   public void display() {
     this.setVisible(true);
-    this.requestFocus();
-  }
-
-  @Override
-  public void resetFocus() {
-    this.setFocusable(true);
     this.requestFocus();
   }
 
@@ -150,6 +147,12 @@ public class SwingView extends JFrame implements IView {
               public void keyReleased(KeyEvent e) { }
             }
     );
+  }
+
+  @Override
+  public void resetFocus() {
+    this.setFocusable(true);
+    this.requestFocus();
   }
 
   @Override
