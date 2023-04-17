@@ -1,6 +1,6 @@
 package views;
 
-import controller.Features;
+import controller.IFeatures;
 import model.IShape;
 
 /**
@@ -14,14 +14,15 @@ public interface IView {
 
   /**
    * make focusable and request focus.
+   * do nothing on default for views that aren't focusable.
    */
-  void resetFocus();
+  default void resetFocus() { }
 
   /**
    * implement features by connecting buttons or key with the given set of features (actions).
    * @param features
    */
-  void addFeatures(Features features);
+  void addFeatures(IFeatures features);
 
   /**
    * update info pane with the given text.
@@ -37,9 +38,11 @@ public interface IView {
 
   /**
    * bring up a popup dialog box with the given message.
+   * do nothing on default for views that aren't able to do so.
+   *
    * @param msg text to display.
    */
-  void showPopUp(String msg);
+  default void showPopUp(String msg) { }
 
   /**
    * called by Controller after sending over a new snapshot to render.
@@ -47,7 +50,7 @@ public interface IView {
   void refresh();
 
   /**
-   * clear graphic panel components and all renderings.
+   * called by Controller before sending over a new snapshot to render.
    */
   void clear();
 }

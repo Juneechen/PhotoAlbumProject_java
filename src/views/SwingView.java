@@ -7,7 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
-import controller.Features;
+import controller.IFeatures;
 import model.IShape;
 
 /**
@@ -24,6 +24,12 @@ public class SwingView extends JFrame implements IView {
   private JLabel infoPane;
   private JComboBox<String> dropdownMenu = new JComboBox<>();
 
+  /**
+   * construct a Swing View with the given parameters.
+   * @param title of the main window.
+   * @param w width of the graphic area.
+   * @param h height of the graphic area.
+   */
   public SwingView(String title, int w, int h) {
     super(title); // set the tile of this frame
     this.canvasWidth = w;
@@ -41,7 +47,6 @@ public class SwingView extends JFrame implements IView {
    * - buttons;
    * - a panel for buttons;
    * - pop-up selection box from buttons.
-   *
    */
   private void setUpPane() {
     // setup buttons pane and add buttons to it
@@ -75,7 +80,7 @@ public class SwingView extends JFrame implements IView {
 
   @Override
   public void renderShape(IShape shape) {
-    this.graphicPane.addComponent(shape); // add to graphic pane's component for repaint
+    this.graphicPane.render(shape); // add to graphic pane's component for repaint
   }
 
   @Override
@@ -85,11 +90,6 @@ public class SwingView extends JFrame implements IView {
     this.infoPane.setText(text);
   }
 
-
-  @Override
-  public void refresh() {
-    this.graphicPane.repaint();
-  }
 
   @Override
   public void showPopUp(String msg) {
@@ -106,7 +106,7 @@ public class SwingView extends JFrame implements IView {
   }
 
   @Override
-  public void addFeatures(Features features) {
+  public void addFeatures(IFeatures features) {
     prev.addActionListener(l -> features.getPrev());
     next.addActionListener(l -> features.getNext());
     quit.addActionListener(l -> features.exit());
@@ -149,14 +149,22 @@ public class SwingView extends JFrame implements IView {
     );
   }
 
+  /**
+   * clear graphic panel components and all renderings.
+   */
+  @Override
+  public void clear() {
+    this.graphicPane.reset();
+  }
+
+  @Override
+  public void refresh() {
+    this.graphicPane.repaint();
+  }
+
   @Override
   public void resetFocus() {
     this.setFocusable(true);
     this.requestFocus();
-  }
-
-  @Override
-  public void clear() {
-    this.graphicPane.reset();
   }
 }

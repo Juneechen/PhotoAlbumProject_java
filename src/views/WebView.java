@@ -2,19 +2,30 @@ package views;
 
 import java.io.IOException;
 
-import controller.Features;
+import controller.IFeatures;
 import model.IShape;
 import model.Oval;
 import model.Rectangle;
 
+/**
+ * a Web view for the shapeAlbum.
+ * Capable of displaying a static view of all snapshots/pages from the album
+ * by generating an html file with SVG markup.
+ */
 public class WebView implements IView {
   private final int width;
   private final int height;
   private final Appendable out;
   private final IRenderer webRenderer;
-  private Features f;
+  private IFeatures f;
 
-
+  /**
+   * construct a Web View with the given parameters.
+   * @param header for the webpage
+   * @param w width of each snapshot.
+   * @param h height of each snapshot.
+   * @param out an Appendable to generate the markup output.
+   */
   public WebView(String header, int w, int h, Appendable out) {
     this.width = w;
     this.height = h;
@@ -39,6 +50,7 @@ public class WebView implements IView {
       System.out.println("append error");
     }
   }
+
   @Override
   public void display() {
     while (f.hasNext()) { // request all snapshots
@@ -53,7 +65,7 @@ public class WebView implements IView {
   }
 
   @Override
-  public void addFeatures(Features features) {
+  public void addFeatures(IFeatures features) {
     this.f = features;
   }
 
