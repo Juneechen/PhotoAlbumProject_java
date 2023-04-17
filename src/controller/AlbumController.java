@@ -58,17 +58,17 @@ public class AlbumController implements IController, IFeatures {
 
     // retrieve the snapshot id and description
     String snapshotInfo = model.getSnapshotAt(idx).getId() + "\n"
-            + model.getSnapshots().get(idx).getDescription();
+            + model.getSnapshotAt(idx).getDescription();
     this.view.updateInfoPane(snapshotInfo); // ask view to update infoPane with this info
 
-    this.view.clear(); // clear the View before sending over new shapes to display
+    this.view.clear(); // notify the view shapes in the snapshot is about to be sent over.
 
     List<IShape> shapes = model.getSnapshotAt(idx).getShapes();
     for (IShape each : shapes) {
-      this.view.renderShape(each);  // add to view's component
+      this.view.renderShape(each);  // ask view to render each shape
     }
 
-    this.view.refresh(); // repaint all
+    this.view.refresh(); // notify the view all shapes in the snapshot has been sent over.
     this.view.resetFocus();
   }
 
