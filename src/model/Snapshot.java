@@ -18,8 +18,7 @@ public class Snapshot {
   private final String id;
   private final String timestamp;
   private final String description;
-  private final String shapesDescription;
-  // private final List<String> shapesSpec;
+  private final String shapesInfo;
   private final List<IShape> shapes;
 
   /**
@@ -35,8 +34,8 @@ public class Snapshot {
     this.id = this.time.format(DateTimeFormatter.ofPattern(ID_Format));
     this.timestamp = this.time.format(DateTimeFormatter.ofPattern(TIME_FORMAT));
     this.description = note;
-    this.shapesDescription = shapes.stream().map(Object::toString).collect(Collectors.joining("\n"));
-    this.shapes = new ArrayList<>(shapes);
+    this.shapesInfo = shapes.stream().map(Object::toString).collect(Collectors.joining("\n"));
+    this.shapes = new ArrayList<>(shapes); // shapes is already a deep copy of the original shapes
   }
 
   /**
@@ -48,8 +47,8 @@ public class Snapshot {
   }
 
   /**
-   * timestamp getter.
-   * @return the timestamp.
+   * description getter.
+   * @return the description.
    */
   public String getDescription() {
     return this.description;
@@ -57,7 +56,7 @@ public class Snapshot {
 
   /**
    * retrieve a list of all shapes contained in one snapshot.
-   * @return an unmodifiable list of all shapes
+   * @return an unmodifiable list of all shapes.
    */
   public List<IShape> getShapes() {
     return Collections.unmodifiableList(shapes);
@@ -65,7 +64,9 @@ public class Snapshot {
 
   @Override
   public String toString() {
-    return String.join("\n", "Snapshot ID: " + this.id, "Timestamp: " + this.timestamp,
-            "Description: " + this.description, "Shape Information:", this.shapesDescription);
+    return String.join("\n", "Snapshot ID: " + this.id,
+            "Timestamp: " + this.timestamp,
+            "Description: " + this.description,
+            "Shape Information:", this.shapesInfo);
   }
 }

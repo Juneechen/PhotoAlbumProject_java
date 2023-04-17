@@ -9,11 +9,25 @@ import views.IShapeVisitor;
  */
 public interface IShape {
   /**
-   * return the Color of the shape.
+   * return the name of the shape.
    *
-   * @return color of the shape.
+   * @return name of the shape.
    */
-  Color getColor();
+  String getName();
+
+  /**
+   * return the x coordinate of the shape.
+   *
+   * @return x coordinate of the shape.
+   */
+  int getX();
+
+  /**
+   * return the y coordinate of the shape.
+   *
+   * @return y coordinate of the shape.
+   */
+  int getY();
 
   /**
    * return the x dimension of the shape.
@@ -30,25 +44,11 @@ public interface IShape {
   int getHeight();
 
   /**
-   * return the position of the shape.
+   * return the Color of the shape.
    *
-   * @return a 2D Point representing a shape's position.
+   * @return color of the shape.
    */
-  Point getPosition();
-
-  /**
-   * return the x coordinate of the shape.
-   *
-   * @return x coordinate of the shape.
-   */
-  int getX();
-
-  /**
-   * return the y coordinate of the shape.
-   *
-   * @return y coordinate of the shape.
-   */
-  int getY();
+  Color getColor();
 
   /**
    * move the shape to the target position.
@@ -72,10 +72,10 @@ public interface IShape {
    * Should only be used through the {@link ShapeFactory} class
    * that ensures all parameter are valid for a shape.
    *
-   * @param x desired x dimension.
-   * @param y desired y dimension.
+   * @param w desired x dimension.
+   * @param h desired y dimension.
    */
-  void resize(int x, int y);
+  void resize(int w, int h);
 
   /**
    * make a copy of the shape.
@@ -83,5 +83,9 @@ public interface IShape {
    */
   IShape copy();
 
+  /**
+   * accept a visitor and have the visitor visit self.
+   * @param visitor a visitor.
+   */
   void accept(IShapeVisitor visitor);
 }

@@ -16,8 +16,7 @@ public class Rectangle extends ShapeImpl {
    * @param height y dimension (>0) of the shape; could be height or y radius.
    * @param color name of the fill color.
    */
-  public Rectangle(String name, int xCord, int yCord,
-                   int width, int height, Color color) {
+  public Rectangle(String name, int xCord, int yCord, int width, int height, Color color) {
     super(name, xCord, yCord, width, height, color);
   }
 
@@ -29,13 +28,13 @@ public class Rectangle extends ShapeImpl {
 
   @Override
   public void accept(IShapeVisitor visitor) {
-    visitor.visit((Rectangle) this.copy());
+    visitor.visit((Rectangle)this.copy());
   }
 
   @Override
   public String toString() {
     return String.format("Name: %s\nType: rectangle\n"
-            + "Min corner: %s, Width: %d, Height: %d, %s", this.name,
-            this.position.toString(), this.width, this.height, this.color.toString());
+            + "Min corner: (%d, %d), Width: %d, Height: %d, %s", this.name,
+            this.x, this.y, this.width, this.height, this.color.toString());
   }
 }

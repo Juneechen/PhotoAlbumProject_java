@@ -9,9 +9,14 @@ import java.awt.Color;
  */
 public abstract class ShapeImpl implements IShape {
   protected String name;
+  protected int x, y;
   protected int width, height;
-  protected Point position;
   protected Color color;
+
+  @Override
+  public String getName() {
+    return this.name;
+  }
 
   /**
    * Construct a Shape object with the given parameters, assume all info are valid.
@@ -31,15 +36,11 @@ public abstract class ShapeImpl implements IShape {
     //      throw new IllegalArgumentException("invalid shape info.\n");
     //    }
     this.name = name;
-    this.color = color;
+    this.x = xCord;
+    this.y = yCord;
     this.width = width;
     this.height = height;
-    this.position = new Point(xCord, yCord);
-  }
-
-  @Override
-  public Color getColor() {
-    return this.color;
+    this.color = color;
   }
 
   @Override
@@ -53,23 +54,24 @@ public abstract class ShapeImpl implements IShape {
   }
 
   @Override
-  public Point getPosition() {
-    return this.position;
+  public Color getColor() {
+    return this.color;
   }
 
   @Override
   public int getX() {
-    return this.getPosition().getX();
+    return this.x;
   }
 
   @Override
   public int getY() {
-    return this.getPosition().getY();
+    return this.y;
   }
 
   @Override
   public void setPosition(int x, int y) {
-    this.position = new Point(x, y);
+    this.x = x;
+    this.y = y;
   }
 
   @Override
@@ -78,14 +80,14 @@ public abstract class ShapeImpl implements IShape {
   }
 
   @Override
-  public void resize(int x, int y) {
-    this.width = x;
-    this.height = y;
+  public void resize(int w, int h) {
+    this.width = w;
+    this.height = h;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.name, this.width, this.height, this.position, this.color);
+    return Objects.hash(this.name, this.width, this.height, this.x, this.y, this.color);
   }
 
   @Override
@@ -97,9 +99,10 @@ public abstract class ShapeImpl implements IShape {
       return false;
     }
     ShapeImpl o = (ShapeImpl) obj;
-    return this.name.equals(o.name) && Double.compare(this.width, o.width) == 0
+    return this.name.equals(o.name)
+            && Double.compare(this.width, o.width) == 0
             && Double.compare(this.height, o.height) == 0
-            && this.position.equals(o.position)
+            && this.x == o.getX() && this.y == o.getY()
             && this.color.equals(o.color);
   }
 }

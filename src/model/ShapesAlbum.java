@@ -15,6 +15,13 @@ public class ShapesAlbum implements IAlbum {
   private Map<String, IShape> shapeMap = new HashMap<>();
   private List<IShape> allShapes = new ArrayList<>();
   private List<Snapshot> snapshots = new ArrayList<>();
+  private int totalSnapshots = 0;
+
+
+  @Override
+  public int getTotalSnapshots() {
+    return this.totalSnapshots;
+  }
 
   /**
    * add a shape into the album given a unique identifier and a set of shape properties.
@@ -37,9 +44,8 @@ public class ShapesAlbum implements IAlbum {
       IShape toAdd = ShapeFactory.create(identifier, kind, xCord, yCord, width, height, color);
       shapeMap.put(identifier, toAdd);
       allShapes.add(toAdd);
-    }
-    catch (IllegalArgumentException e) {
-      return;
+    } catch (IllegalArgumentException e) {
+      return; // ignore add()
     }
   }
 
@@ -51,7 +57,7 @@ public class ShapesAlbum implements IAlbum {
    */
   @Override
   public IShape remove(String identifier) {
-    IShape target = shapeMap.remove(identifier);
+    IShape target = shapeMap.remove(identifier); // hashmap remove() returns the object if found
     if (target != null) {
       allShapes.remove(target);
     }
@@ -59,7 +65,7 @@ public class ShapesAlbum implements IAlbum {
   }
 
   /**
-   * reposition the item.
+   * reposition a shape.
    *
    * @param identifier a unique identifier for the item.
    * @param x destination x coordinate.
@@ -68,10 +74,9 @@ public class ShapesAlbum implements IAlbum {
   @Override
   public void move(String identifier, int x, int y) {
     IShape s = shapeMap.get(identifier);
-    if (s == null) {
-      return;
+    if (s != null) {
+      s.setPosition(x, y);
     }
-    s.setPosition(x, y);
   }
 
   /**
@@ -84,10 +89,9 @@ public class ShapesAlbum implements IAlbum {
   @Override
   public void resize(String identifier, int xSize, int ySize) {
     IShape s = shapeMap.get(identifier);
-    if (s == null) {
-      return;
+    if (s != null) {
+      ShapeFactory.changeSize(s, xSize, ySize);
     }
-    ShapeFactory.changeSize(s, xSize, ySize);
   }
 
   /**
@@ -100,11 +104,9 @@ public class ShapesAlbum implements IAlbum {
   @Override
   public void changeColor(String identifier, Color colorName) throws IllegalArgumentException {
     IShape shape = this.shapeMap.get(identifier);
-    if (shape == null) {
-      return;
+    if (shape != null) {
+      ShapeFactory.changeColor(shape, colorName);
     }
-
-    ShapeFactory.changeColor(shape, colorName);
   }
 
   /**
@@ -115,11 +117,20 @@ public class ShapesAlbum implements IAlbum {
   @Override
   public void takeSnapshot(String note) {
     List<IShape> temp = new ArrayList<>();
-    this.allShapes.forEach(s -> temp.add(s.copy()));
+    this.allShapes.forEach(s -> temp.add(s.copy())); // add deep copies
 
     Snapshot toAdd = new Snapshot(note, temp);
     this.snapshots.add(toAdd);
-    // this.snapshotMap.put(toAdd.getId(), toAdd);
+    this.totalSnapshots++;
+  }
+
+  @Override
+  public Snapshot getSnapshotAt(int idx) {
+    try {
+      return snapshots.get(idx);
+    } catch (IndexOutOfBoundsException e) {
+      return null;
+    }
   }
 
   /**
