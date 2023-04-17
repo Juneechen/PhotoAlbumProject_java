@@ -20,7 +20,7 @@ public class PhotoAlbumMain {
    * @param args specifying input source, view, optional output source, and dimensions.
    */
   public static void main(String[] args) throws Exception {
-//    args = new String[] {"-in", "buildings.txt", "-view", "web", "-out", "testWebView.html", "800", "800"};
+//    args = new String[] {"-in", "buildings.txt", "-view", "web", "-out", "buildingsOut.html", "800", "800"};
 //    args = new String[] {"-in", "buildings.txt", "-view", "graphical", "800", "800"};
 
     ArgsReader r = new ArgsReader(args); // parse arguments and check validity
