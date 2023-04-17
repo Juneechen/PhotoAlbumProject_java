@@ -8,6 +8,12 @@ import java.util.List;
  */
 public interface IAlbum {
   /**
+   * answer the total number of snapshots in the album.
+   * @return the number of snapshots.
+   */
+  int getTotalSnapshots();
+
+  /**
    * add a shape into the album given a unique identifier and a set of shape properties.
    *
    * @param name a unique name for the shape.
@@ -62,6 +68,13 @@ public interface IAlbum {
    * @param note a descriptive note for this snapshot.
    */
   void takeSnapshot(String note);
+
+  /**
+   * get a snapshot by index; snapshots are ordered by time taken.
+   * @param idx the index of the snapshot.
+   * @return the requested snapshot, or null if index out of bound.
+   */
+  Snapshot getSnapshotAt(int idx);
 
   /**
    * show all snapshots taken.
