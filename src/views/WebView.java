@@ -18,6 +18,19 @@ public class WebView implements IView {
   private final Appendable out;
   private final IRenderer webRenderer;
   private IFeatures f;
+  private final String VER = "<!DOCTYPE html>\n";
+  private final String ROOT = "<html>\n";
+  private final String STYLE = "<head>\n"
+                              + "<style>\n"
+                              + "\t.snapshot {\n"
+                              + "\t\tborder: 5px outset rgb(245, 213, 131);\n"
+                              + "\t\tbackground-color: lightgrey;\n"
+                              + "\t\tbox-sizing: border-box;\n"
+                              + "\t}\n"
+                              + "</style>\n"
+                              + "</head>\n";
+  private final String PAGE_END = "</body>\n</html>";
+  private final String header;
 
   /**
    * construct a Web View with the given parameters.
@@ -31,34 +44,24 @@ public class WebView implements IView {
     this.height = h;
     this.out = out;
     this.webRenderer = new webRender();
-
-    try {
-      out.append("<!DOCTYPE html>\n"
-              + "<html>\n"
-              + "<head>\n"
-              + "<style>\n"
-              + "\t.snapshot {\n"
-              + "\t\tborder: 5px outset rgb(245, 213, 131);\n"
-              + "\t\tbackground-color: lightgrey;\n"
-              + "\t\tbox-sizing: border-box;\n"
-              + "\t}\n"
-              + "</style>\n"
-              + "</head>\n"
-              + "<body>\n"
-              + "<h1>" + header + "</h1>\n");
-    } catch (IOException e) {
-      System.out.println("append error");
-    }
+    this.header = "<body>\n<h1>" + header + "</h1>\n";
   }
 
   @Override
   public void display() {
+    try {
+      out.append(this.VER).append(this.ROOT).append(this.STYLE).append(this.header);
+    } catch (IOException e) {
+      System.out.println("append error");
+    }
+
     while (f.hasNext()) { // request all snapshots
       f.getNext(); // it calls renderShape() for each shape in the next snapshot
     }
+
     // all snapshots rendered by now
     try {
-      this.out.append("</body>\n</html>");
+      this.out.append(this.PAGE_END);
     } catch (IOException e) {
       System.out.println("append error");
     }
@@ -85,7 +88,7 @@ public class WebView implements IView {
   }
 
   @Override
-  public void refresh() {
+  public void notifyEndOfSnapshot() {
     // called after all shapes in a snapshot are sent over for rendering
     try {
       out.append("\t</svg>\n</div>\n<p></p>\n");
@@ -94,8 +97,11 @@ public class WebView implements IView {
     }
   }
 
+  /**
+   * append info for a new snapshot image.
+   */
   @Override
-  public void clear() {
+  public void getReadyForSnapshot() {
     // called before a new snapshot comes in
     try {
       out.append("\t<svg width=\"" + this.width + "\" height=\"" + this.height + "\">\n");
@@ -131,7 +137,6 @@ public class WebView implements IView {
 
     @Override
     public void visit(Oval oval) {
-      System.out.println(" \t\t ----rendering a Oval ---\n");
       try {
         out.append("\t\t<ellipse id=\"" + oval.getName()
                 + "\" cx=\"" + oval.getX() + "\" cy=\"" + oval.getY()

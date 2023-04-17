@@ -31,14 +31,7 @@ public class AlbumController implements IController, IFeatures {
   public void go() {
     this.albumSize = model.getTotalSnapshots();
     this.view.addFeatures(this); // need a correct album size before initializing selection menu
-
-    if (albumSize > 0) {
-      this.getSnapshot(0); // send the first snapshot to the View
-    }
-
     this.view.display();
-    // got everything, exit
-    System.out.println(" ---- got back from webView display, return\n\n");
   }
 
   @Override
@@ -61,14 +54,14 @@ public class AlbumController implements IController, IFeatures {
             + model.getSnapshotAt(idx).getDescription();
     this.view.updateInfoPane(snapshotInfo); // ask view to update infoPane with this info
 
-    this.view.clear(); // notify the view shapes in the snapshot is about to be sent over.
+    this.view.getReadyForSnapshot(); // notify the view shapes in the snapshot is about to be sent over.
 
     List<IShape> shapes = model.getSnapshotAt(idx).getShapes();
     for (IShape each : shapes) {
       this.view.renderShape(each);  // ask view to render each shape
     }
 
-    this.view.refresh(); // notify the view all shapes in the snapshot has been sent over.
+    this.view.notifyEndOfSnapshot(); // notify the view all shapes in the snapshot has been sent over.
     this.view.resetFocus();
   }
 

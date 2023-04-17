@@ -78,6 +78,7 @@ public class SwingView extends JFrame implements IView {
   public void display() {
     this.setVisible(true);
     this.requestFocus();
+    this.next.doClick(); // get the first snapshot
   }
 
   @Override
@@ -155,12 +156,12 @@ public class SwingView extends JFrame implements IView {
    * clear graphic panel components and all renderings.
    */
   @Override
-  public void clear() {
+  public void getReadyForSnapshot() {
     this.graphicPane.reset();
   }
 
   @Override
-  public void refresh() {
+  public void notifyEndOfSnapshot() {
     this.graphicPane.repaint();
   }
 

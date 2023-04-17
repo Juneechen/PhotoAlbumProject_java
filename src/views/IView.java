@@ -45,12 +45,12 @@ public interface IView {
   default void showPopUp(String msg) { }
 
   /**
-   * called by Controller after sending over a new snapshot to render.
+   * called by Controller when done sending over a snapshot to render.
    */
-  void refresh();
+  void notifyEndOfSnapshot();
 
   /**
    * called by Controller before sending over a new snapshot to render.
    */
-  void clear();
+  void getReadyForSnapshot();
 }
