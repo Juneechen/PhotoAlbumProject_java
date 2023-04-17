@@ -1,3 +1,45 @@
+HW 9
+changes:
+    - shape constructor takes Java.awt.Color object instead of my custom Color enum.
+    - add getID() and getDescription() to Snapshot class, since they need to be retrieved and displayed in the View.
+    - add an accept(IShapeVisitor) method to IShape
+      for the Controller as the Visitor to visit different type of shapes
+      and send different message to the View for rendering.
+      Justification: the IShapeVisitor is not part of the model package.
+      However, by having the model objects only aware of the visitor interface,
+      we can swap out different implementations of the visitor (the controller or view)
+      without affecting the model objects.
+
+question:
+    Command reader in the controller package with some class method to parse input.txt command into
+        - should this reader be passed the model?
+        - or it is better passin the controller and have reader send back the parsed info through a method
+            - controller.receive()
+
+    what is a good way to check for type:
+        - getType() method in IShape
+        - double dispatch: render(Controller c) {c.render(this)
+          but this way shape needs to know about controller
+        - visitor: overkill? like I'm passing myself to the visitor, why dont i just provide a get type method
+            - should IVisitor be something provided by the model then get implemented by outside pacakge?
+
+    should shape or snapshot object be stored in View for paintComponents()
+        - don't think so
+
+    way to get prev
+        - iterator doesn't go backwards
+        - save the current index as a variable in Controller?
+
+
+
+
+
+
+
+
+
+
+HW 8
 The model package overview:
 
 IShape Interface and the ShapesAlbum class:
