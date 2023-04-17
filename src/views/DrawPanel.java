@@ -9,7 +9,7 @@ import model.Oval;
 import model.Rectangle;
 
 
-public class DrawPanel extends JPanel implements IShapeVisitor {
+public class DrawPanel extends JPanel implements IRenderer {
   private List<IShape> shapes;
   private Graphics pen;
 
@@ -27,13 +27,9 @@ public class DrawPanel extends JPanel implements IShapeVisitor {
     }
   }
 
-  public void addComponent(IShape shape) {
+  @Override
+  public void render(IShape shape) {
     this.shapes.add(shape);
-  }
-
-  public void reset() {
-    this.shapes = new ArrayList<>();
-    this.getGraphics().clearRect(0, 0, this.getWidth(), this.getHeight());
   }
 
   @Override
@@ -48,6 +44,10 @@ public class DrawPanel extends JPanel implements IShapeVisitor {
     pen.fillOval(oval.getX(), oval.getY(), oval.getWidth(), oval.getHeight());
   }
 
+
   @Override
-  public void visit(IShape shape) { }
+  public void reset() {
+    this.shapes = new ArrayList<>();
+    this.getGraphics().clearRect(0, 0, this.getWidth(), this.getHeight());
+  }
 }
