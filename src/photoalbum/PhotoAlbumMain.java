@@ -1,9 +1,5 @@
 package photoalbum;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-
 import controller.AlbumController;
 import controller.IController;
 import model.IAlbum;
@@ -12,38 +8,50 @@ import utilities.ArgsReader;
 import utilities.CommandReader;
 import views.IView;
 import views.SwingView;
+import views.WebView;
 
 /**
- * Photo Album Main Entry class.
+ * Photo Album Main Entry.
  */
 public class PhotoAlbumMain {
 
   /**
    * take command line arguments and set up model, view, controller accordingly.
-   * @param args
+   * @param args specifying input source, view, optional output source, and dimensions.
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
+//    args = new String[] {"-in", "buildings.txt", "-view", "web", "-out", "testWebView.html", "800", "800"};
+    args = new String[] {"-in", "buildings.txt", "-view", "graphical", "800", "800"};
+
     ArgsReader r = new ArgsReader(args); // parse arguments and check validity
 
-    IAlbum model = new ShapesAlbum();
-    IView view;
+    // set up view:
+    IView view = null;
+    switch (r.getView().toLowerCase()) {
+      case "graphical":
+        view = new SwingView("Photo Album GUI", r.getWidth(), r.getHeight());
+        break;
 
-    if (r.getView().equalsIgnoreCase("graphical")) {
-      view = new SwingView("Photo Album", r.getWidth(), r.getHeight());
-    } else {
-      view = new SwingView("Photo Album", r.getWidth(), r.getHeight());
+      case "web":
+        view = new WebView("Photo Album Web View", r.getWidth(), r.getHeight(), r.getAppendable());
+        break;
+
+      default:
+        System.out.println("Unknown type of view");
+        System.exit(0);
     }
 
-    try {
-      File file = new File(r.getInFile());
-      FileReader reader = new FileReader(file);
+    // setup model with a Readable command source
+    IAlbum model = new ShapesAlbum();
+    CommandReader.setupAlbum(model, r.getReadable()); // take command from an input source
+    r.closeReadable();
 
-      CommandReader.setupAlbum(model, reader); // take the pre-set command from an input source
+    // setup Controller with the view and model
+    IController controller = new AlbumController(model, view);
+    controller.go(); // activate the controller
 
-      IController controller = new AlbumController(model, view);
-      controller.go();
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
+    if (r.getView().equalsIgnoreCase("web")) {
+      r.closeAppendable(); // need to close file to flush data into disk from memory
     }
   }
 }
