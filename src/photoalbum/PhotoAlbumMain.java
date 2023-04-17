@@ -41,12 +41,12 @@ public class PhotoAlbumMain {
         System.exit(0);
     }
 
-    // setup model with a Readable command source
+    // set up model with a Readable command source
     IAlbum model = new ShapesAlbum();
     CommandReader.setupAlbum(model, r.getReadable()); // take command from an input source
     r.closeReadable();
 
-    // setup Controller with the view and model
+    // set up Controller with the view and model
     IController controller = new AlbumController(model, view);
     controller.go(); // activate the controller
 
