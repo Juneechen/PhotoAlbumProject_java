@@ -16,8 +16,8 @@ public class ArgsReader {
   private String inFile;
   private String outFile;
   private String view;
-  private int width = 1000;
-  private int height = 1000;
+  private int width = 1000; // default width if not specified by args
+  private int height = 1000; // default height
   private java.io.PrintWriter output = null;
   private java.io.FileReader input = null;
 
@@ -25,7 +25,7 @@ public class ArgsReader {
    * construct an ArgsReader with the given arguments.
    * @param args and array of arguments
    */
-  public ArgsReader(String args[]) {
+  public ArgsReader(String[] args) {
     List<String> arguments = Arrays.stream(args).toList();
     Iterator<String> it = arguments.iterator();
 
@@ -110,9 +110,8 @@ public class ArgsReader {
    */
   public Readable getReadable() throws FileNotFoundException {
     java.io.File file = new java.io.File(inFile);
-    java.io.FileReader in = new java.io.FileReader(file);
+    this.input = new java.io.FileReader(file);
 
-    this.input = in;
     return this.input;
   }
 
