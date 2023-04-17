@@ -1,14 +1,16 @@
 package views;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.*;
 import controller.IFeatures;
 import model.IShape;
+import model.Oval;
+import model.Rectangle;
 
 /**
  * a Swing view for the shapeAlbum. Capable of displaying snapshots/pages from the album.
@@ -17,10 +19,10 @@ public class SwingView extends JFrame implements IView {
   public final int canvasWidth;
   public final int canvasHeight;
   private final DrawPanel graphicPane = new DrawPanel();
-  private final JButton prev = new JButton("previous");
-  private final JButton next = new JButton("next");
-  private final JButton quit = new JButton("quit");
-  private final JButton select = new JButton("select");
+  private final JButton prev = new JButton("previous (p)");
+  private final JButton next = new JButton("next (n)");
+  private final JButton quit = new JButton("quit (q)");
+  private final JButton select = new JButton("select (s)");
   private JLabel infoPane;
   private JComboBox<String> dropdownMenu = new JComboBox<>();
 
@@ -166,5 +168,51 @@ public class SwingView extends JFrame implements IView {
   public void resetFocus() {
     this.setFocusable(true);
     this.requestFocus();
+  }
+
+  /**
+   * an inner class DrawPanel that takes care of rendering shapes for SwingView.
+   */
+  class DrawPanel extends JPanel implements IRenderer {
+    private List<IShape> shapes;
+    private Graphics pen;
+
+    public DrawPanel() {
+      this.shapes = new ArrayList<>();
+      repaint(); // setup pen, calls paintComponent()
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+      this.pen = g;
+
+      for (IShape each : shapes) {
+        each.accept(this);
+      }
+    }
+
+    @Override
+    public void render(IShape shape) {
+      this.shapes.add(shape);
+    }
+
+    @Override
+    public void visit(Rectangle rect) {
+      pen.setColor(rect.getColor());
+      pen.fillRect(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+    }
+
+    @Override
+    public void visit(Oval oval) {
+      pen.setColor(oval.getColor());
+      pen.fillOval(oval.getX(), oval.getY(), oval.getWidth(), oval.getHeight());
+    }
+
+
+    @Override
+    public void reset() {
+      this.shapes = new ArrayList<>();
+      this.getGraphics().clearRect(0, 0, this.getWidth(), this.getHeight());
+    }
   }
 }
