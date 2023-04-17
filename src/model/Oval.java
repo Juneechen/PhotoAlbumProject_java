@@ -32,6 +32,8 @@ public class Oval extends ShapeImpl {
 
   @Override
   public String toString() {
-    return String.format("Name: %s\nType: oval\n", this.name) + super.toString();
+    return String.format("Name: %s\nType: oval\nCenter: (%d, %d), X radius: %d, Y radius: %d, ",
+            this.name, this.getX(), this.getY(), this.getWidth(), this.getHeight())
+            + super.toString();
   }
 }
