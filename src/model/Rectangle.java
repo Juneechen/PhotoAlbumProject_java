@@ -33,8 +33,6 @@ public class Rectangle extends ShapeImpl {
 
   @Override
   public String toString() {
-    return String.format("Name: %s\nType: rectangle\n"
-            + "Min corner: (%d, %d), Width: %d, Height: %d, %s", this.name,
-            this.x, this.y, this.width, this.height, this.color.toString());
+    return String.format("Name: %s\nType: rectangle\n", this.name) + super.toString();
   }
 }

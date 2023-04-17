@@ -105,4 +105,11 @@ public abstract class ShapeImpl implements IShape {
             && this.x == o.getX() && this.y == o.getY()
             && this.color.equals(o.color);
   }
+
+  @Override
+  public String toString() {
+    return String.format("Center: (%d, %d), X radius: %d, Y radius: %d, Color: (%d, %d, %d)",
+            this.x, this.y, this.width, this.height,
+            this.color.getRed(), this.color.getGreen(), this.color.getBlue());
+  }
 }
