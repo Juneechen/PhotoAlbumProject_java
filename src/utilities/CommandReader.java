@@ -2,9 +2,13 @@ package utilities;
 
 import java.awt.*;
 import java.util.Scanner;
-
 import model.IAlbum;
 
+/**
+ * CommandReader utility;
+ * capable of parsing commands following a certain schema,
+ * and setting up an IAlbum with the parsed commands.
+ */
 public class CommandReader {
   public static void setupAlbum(IAlbum album, Readable in) {
     Scanner scan = new Scanner(in);
@@ -13,7 +17,7 @@ public class CommandReader {
 
     while(scan.hasNext()) {
       line = scan.nextLine();
-      String[] spec = line.trim().split("\\s+");
+      String[] spec = line.trim().split("\\s+"); // split by one or more white space
       command = spec[0].toLowerCase();
 
       switch (command) {
@@ -45,6 +49,8 @@ public class CommandReader {
           break;
       }
     }
+
+    scan.close();
   }
 
 
@@ -76,6 +82,11 @@ public class CommandReader {
     album.add(id, type, x, y, w, h, new Color(r, g, b));
   }
 
+  /**
+   * move a shape.
+   * @param album the model.
+   * @param info the command.
+   */
   private static void moveShape(IAlbum album, String[] info) {
     String id = info[1];
     int x = Integer.parseInt(info[2]);
@@ -84,6 +95,11 @@ public class CommandReader {
     album.move(id, x, y);
   }
 
+  /**
+   * change the color of a shape.
+   * @param album the model.
+   * @param info the command.
+   */
   private static void colorShape(IAlbum album, String[] info) {
     String id = info[1];
     int r = Integer.parseInt(info[2]);
@@ -93,6 +109,11 @@ public class CommandReader {
     album.changeColor(id, new Color(r, g, b));
   }
 
+  /**
+   * change the size of a shape.
+   * @param album the model.
+   * @param info the command.
+   */
   private static void resizeShape(IAlbum album, String[] info) {
     String id = info[1];
     int w = Integer.parseInt(info[2]);
@@ -101,11 +122,21 @@ public class CommandReader {
     album.resize(id, w, h);
   }
 
+  /**
+   * change the position of a shape.
+   * @param album the model.
+   * @param info the command.
+   */
   private static void removeShape(IAlbum album, String[] info) {
     String id = info[1];
     album.remove(id);
   }
 
+  /**
+   * take a snapshot of the current shapes.
+   * @param album the model.
+   * @param info the command.
+   */
   private static void snapshotCmd(IAlbum album, String[] info) {
     StringBuilder note = new StringBuilder();
 
