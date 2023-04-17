@@ -1,6 +1,7 @@
-package views;
-
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import controller.AlbumController;
 import controller.IFeatures;
@@ -10,8 +11,8 @@ import model.IShape;
 import model.Oval;
 import model.Rectangle;
 import model.ShapesAlbum;
-import org.junit.Before;
-import org.junit.Test;
+import views.IView;
+import views.WebView;
 
 /**
  * unit tests for web view.
