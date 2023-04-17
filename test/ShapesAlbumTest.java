@@ -6,6 +6,9 @@ import model.IShape;
 import model.ShapesAlbum;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.awt.*;
+
 /**
  * unit tests for ShapesAlbum.
  */
@@ -19,8 +22,8 @@ public class ShapesAlbumTest {
    */
   @Before
   public void setUp() throws Exception {
-    album.add("R", "rectangle", "red", 50, 100, 200, 200);
-    album.add("O", "oval", "blue", 60, 30, 500, 100);
+    album.add("R", "rectangle", 200, 200, 50, 100, Color.RED);
+    album.add("O", "oval",  500, 100, 60, 30, Color.BLUE);
   }
 
   /**
@@ -28,10 +31,10 @@ public class ShapesAlbumTest {
    */
   @Test
   public void testAdd() {
-    assertEquals("Name: R\nType: rectangle\nMin corner: (200.0,200.0), Width: 50.0, "
-            + "Height: 100.0, Color: (1.0,0.0,0.0)\n\n" +
-            "Name: O\nType: oval\nCenter: (500.0,100.0), X radius: 60.0, "
-            + "Y radius: 30.0, Color: (0.0,0.0,1.0)", album.toString());
+    assertEquals("Name: R\nType: rectangle\nMin Corner: (200, 200), Width: 50, "
+            + "Height: 100, Color: (255, 0, 0)\n\n" +
+            "Name: O\nType: oval\nCenter: (500, 100), X radius: 60, "
+            + "Y radius: 30, Color: (0, 0, 255)", album.toString());
   }
 
 
@@ -40,7 +43,7 @@ public class ShapesAlbumTest {
    */
   @Test (expected = IllegalArgumentException.class)
   public void testAddDuplicate() {
-    album.add("R", "rectangle", "green", 100, 80, 0, 0);
+    album.add("R", "rectangle", 0, 0, 100, 80, Color.GREEN);
   }
 
   /**
@@ -48,7 +51,7 @@ public class ShapesAlbumTest {
    */
   @Test (expected = IllegalArgumentException.class)
   public void testAddEmptyName() {
-    album.add("", "rectangle", "green", 100, 80, 0, 0);
+    album.add("", "rectangle", 0, 0, 100, 80, Color.GREEN);
   }
 
   /**
@@ -56,7 +59,7 @@ public class ShapesAlbumTest {
    */
   @Test (expected = IllegalArgumentException.class)
   public void testAddNullName() {
-    album.add(null, "rectangle", "green", 100, 80, 0, 0);
+    album.add(null, "rectangle", 0, 0, 100, 80, Color.GREEN);
   }
 
   /**
@@ -67,19 +70,17 @@ public class ShapesAlbumTest {
   @Test
   public void testAddInvalid() {
     // unknown type
-    album.add("T", "triangle", "green", 100, 80, 0, 0);
-    // unknown color
-    album.add("R1", "rectangle", "yellow", 100, 80, 0, 0);
+    album.add("T", "triangle", 0, 0, 100, 80, Color.GREEN);
     // invalid x dimension
-    album.add("R2", "rectangle", "green", 0, 80, 0, 0);
+    album.add("R2", "rectangle", 0, 0, 0, 80, Color.GREEN);
     // unknown y dimension
-    album.add("R3", "rectangle", "green", 100, -0.1, 0, 0);
+    album.add("R3", "rectangle", 0, 0, 100, -1, Color.GREEN);
 
     // check album, none of the above should be added:
-    assertEquals("Name: R\nType: rectangle\nMin corner: (200.0,200.0), Width: 50.0, "
-            + "Height: 100.0, Color: (1.0,0.0,0.0)\n\n" +
-            "Name: O\nType: oval\nCenter: (500.0,100.0), X radius: 60.0, "
-            + "Y radius: 30.0, Color: (0.0,0.0,1.0)", album.toString());
+    assertEquals("Name: R\nType: rectangle\nMin Corner: (200, 200), Width: 50, "
+            + "Height: 100, Color: (255, 0, 0)\n\n" +
+            "Name: O\nType: oval\nCenter: (500, 100), X radius: 60, "
+            + "Y radius: 30, Color: (0, 0, 255)", album.toString());
   }
 
   /**
@@ -90,8 +91,8 @@ public class ShapesAlbumTest {
     IShape target = album.remove("R");
 
     // check album, R should be gone
-    assertEquals("Name: O\nType: oval\nCenter: (500.0,100.0), X radius: 60.0, "
-            + "Y radius: 30.0, Color: (0.0,0.0,1.0)", album.toString());
+    assertEquals("Name: O\nType: oval\nCenter: (500, 100), X radius: 60, "
+            + "Y radius: 30, Color: (0, 0, 255)", album.toString());
   }
 
   /**
@@ -109,10 +110,10 @@ public class ShapesAlbumTest {
     assertNull(target);
 
     // check album, should remain unchanged:
-    assertEquals("Name: R\nType: rectangle\nMin corner: (200.0,200.0), Width: 50.0, "
-            + "Height: 100.0, Color: (1.0,0.0,0.0)\n\n" +
-            "Name: O\nType: oval\nCenter: (500.0,100.0), X radius: 60.0, "
-            + "Y radius: 30.0, Color: (0.0,0.0,1.0)", album.toString());
+    assertEquals("Name: R\nType: rectangle\nMin Corner: (200, 200), Width: 50, "
+            + "Height: 100, Color: (255, 0, 0)\n\n" +
+            "Name: O\nType: oval\nCenter: (500, 100), X radius: 60, "
+            + "Y radius: 30, Color: (0, 0, 255)", album.toString());
   }
 
   /**
@@ -123,10 +124,10 @@ public class ShapesAlbumTest {
     album.move("R", 33, 33);
 
     // check album, R's position should be changed:
-    assertEquals("Name: R\nType: rectangle\nMin corner: (33.0,33.0), Width: 50.0, "
-            + "Height: 100.0, Color: (1.0,0.0,0.0)\n\n" +
-            "Name: O\nType: oval\nCenter: (500.0,100.0), X radius: 60.0, "
-            + "Y radius: 30.0, Color: (0.0,0.0,1.0)", album.toString());
+    assertEquals("Name: R\nType: rectangle\nMin Corner: (33, 33), Width: 50, "
+            + "Height: 100, Color: (255, 0, 0)\n\n" +
+            "Name: O\nType: oval\nCenter: (500, 100), X radius: 60, "
+            + "Y radius: 30, Color: (0, 0, 255)", album.toString());
   }
 
   /**
@@ -139,10 +140,10 @@ public class ShapesAlbumTest {
     album.move(null, 33, 33);
 
     // check album, should remain unchanged:
-    assertEquals("Name: R\nType: rectangle\nMin corner: (200.0,200.0), Width: 50.0, "
-            + "Height: 100.0, Color: (1.0,0.0,0.0)\n\n" +
-            "Name: O\nType: oval\nCenter: (500.0,100.0), X radius: 60.0, "
-            + "Y radius: 30.0, Color: (0.0,0.0,1.0)", album.toString());
+    assertEquals("Name: R\nType: rectangle\nMin Corner: (200, 200), Width: 50, "
+            + "Height: 100, Color: (255, 0, 0)\n\n" +
+            "Name: O\nType: oval\nCenter: (500, 100), X radius: 60, "
+            + "Y radius: 30, Color: (0, 0, 255)", album.toString());
   }
 
   /**
@@ -153,10 +154,10 @@ public class ShapesAlbumTest {
     album.resize("O", 66, 66);
 
     // check album, O's dimensions should be changed:
-    assertEquals("Name: R\nType: rectangle\nMin corner: (200.0,200.0), Width: 50.0, "
-            + "Height: 100.0, Color: (1.0,0.0,0.0)\n\n" +
-            "Name: O\nType: oval\nCenter: (500.0,100.0), X radius: 66.0, "
-            + "Y radius: 66.0, Color: (0.0,0.0,1.0)", album.toString());
+    assertEquals("Name: R\nType: rectangle\nMin Corner: (200, 200), Width: 50, "
+            + "Height: 100, Color: (255, 0, 0)\n\n" +
+            "Name: O\nType: oval\nCenter: (500, 100), X radius: 66, "
+            + "Y radius: 66, Color: (0, 0, 255)", album.toString());
   }
 
   /**
@@ -169,10 +170,10 @@ public class ShapesAlbumTest {
     album.resize("R", 66, 0);
 
     // check album
-    assertEquals("Name: R\nType: rectangle\nMin corner: (200.0,200.0), Width: 50.0, "
-            + "Height: 100.0, Color: (1.0,0.0,0.0)\n\n" +
-            "Name: O\nType: oval\nCenter: (500.0,100.0), X radius: 60.0, "
-            + "Y radius: 30.0, Color: (0.0,0.0,1.0)", album.toString());
+    assertEquals("Name: R\nType: rectangle\nMin Corner: (200, 200), Width: 50, "
+            + "Height: 100, Color: (255, 0, 0)\n\n" +
+            "Name: O\nType: oval\nCenter: (500, 100), X radius: 60, "
+            + "Y radius: 30, Color: (0, 0, 255)", album.toString());
   }
 
   /**
@@ -180,26 +181,26 @@ public class ShapesAlbumTest {
    */
   @Test
   public void changeColor() {
-    album.changeColor("O", "green");
+    album.changeColor("O", Color.GREEN);
 
-    assertEquals("Name: R\nType: rectangle\nMin corner: (200.0,200.0), Width: 50.0, "
-            + "Height: 100.0, Color: (1.0,0.0,0.0)\n\n" +
-            "Name: O\nType: oval\nCenter: (500.0,100.0), X radius: 60.0, "
-            + "Y radius: 30.0, Color: (0.0,1.0,0.0)", album.toString());
+    assertEquals("Name: R\nType: rectangle\nMin Corner: (200, 200), Width: 50, "
+            + "Height: 100, Color: (255, 0, 0)\n\n" +
+            "Name: O\nType: oval\nCenter: (500, 100), X radius: 60, "
+            + "Y radius: 30, Color: (0, 255, 0)", album.toString());
   }
 
   /**
-   * test changeColor(): unknown color or identifier.
+   * test changeColor(): unknown identifier or null color.
    */
   @Test
   public void changeColorInvalid() {
-    album.changeColor("O1", "green");
-    album.changeColor("O", "pink");
+    album.changeColor("O1", Color.GREEN);
+    album.changeColor("O", null);
 
-    assertEquals("Name: R\nType: rectangle\nMin corner: (200.0,200.0), Width: 50.0, "
-            + "Height: 100.0, Color: (1.0,0.0,0.0)\n\n" +
-            "Name: O\nType: oval\nCenter: (500.0,100.0), X radius: 60.0, "
-            + "Y radius: 30.0, Color: (0.0,0.0,1.0)", album.toString());
+    assertEquals("Name: R\nType: rectangle\nMin Corner: (200, 200), Width: 50, "
+            + "Height: 100, Color: (255, 0, 0)\n\n" +
+            "Name: O\nType: oval\nCenter: (500, 100), X radius: 60, "
+            + "Y radius: 30, Color: (0, 0, 255)", album.toString());
   }
 
   /**
@@ -208,7 +209,7 @@ public class ShapesAlbumTest {
   @Test
   public void testTakeSnapshot() {
     album.takeSnapshot("test");
-    assertEquals(1, album.getSnapshots().size());
+    assertEquals(1, album.getTotalSnapshots());
   }
 
   /**
@@ -230,7 +231,7 @@ public class ShapesAlbumTest {
     album.takeSnapshot("test");
 
     album.makeEmpty();
-    assertEquals(1, album.getSnapshots().size());
+    assertEquals(1, album.getTotalSnapshots());
     assertEquals("", album.toString());
   }
 }

@@ -1,9 +1,9 @@
 import static org.junit.Assert.assertEquals;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Color;
 import model.IShape;
 import model.Oval;
 import model.Rectangle;
@@ -17,8 +17,8 @@ import org.junit.Test;
 public class SnapshotTest {
   private Snapshot snapshotEmpty = new Snapshot("empty", new ArrayList<>());
   private Snapshot snapshot;
-  private IShape rec = new Rectangle("R", Color.RED, 50, 100, 200, 200);
-  private IShape oval = new Oval("O", Color.BLUE, 60, 30, 500, 100);
+  private IShape rec = new Rectangle("R", 200, 200, 50, 100, Color.RED);
+  private IShape oval = new Oval("O", 500, 100, 60, 30, Color.BLUE);
 
   @Before
   public void setUp() throws Exception {
@@ -29,27 +29,27 @@ public class SnapshotTest {
   }
 
   /**
-   * test getShapes(),
-   * make sure it returns the list containing the shapes in insertion order,
+   * test getShapes(), 
+   * make sure it returns the list containing the shapes in insertion order, 
    * and that the list is unmodifiable.
    */
   @Test
   public void getShapes() {
     assertEquals(2, snapshot.getShapes().size());
     assertEquals("Name: R\nType: rectangle\n"
-            + "Min corner: (200.0,200.0), Width: 50.0, Height: 100.0, Color: (1.0,0.0,0.0)",
+            + "Min Corner: (200, 200), Width: 50, Height: 100, Color: (255, 0, 0)",
             snapshot.getShapes().get(0).toString());
     assertEquals("Name: O\nType: oval\n"
-            + "Center: (500.0,100.0), X radius: 60.0, Y radius: 30.0, Color: (0.0,0.0,1.0)",
+            + "Center: (500, 100), X radius: 60, Y radius: 30, Color: (0, 0, 255)",
             snapshot.getShapes().get(1).toString());
   }
 
   /**
-   * test getShapes(),
+   * test getShapes(), 
    * make sure the returned list is unmodifiable.
    */
   @Test (expected = UnsupportedOperationException.class)
   public void getShapesUnmodifiable() {
-    snapshot.getShapes().add(new Oval("O", Color.GREEN, 60, 30, 500, 100));
+    snapshot.getShapes().add(new Oval("O", 60, 30, 500, 100, Color.GREEN));
   }
 }
