@@ -29,10 +29,11 @@ public class ShapeFactory {
     if (kind == null || kind.isEmpty()) {
       throw new IllegalArgumentException("unknown shape type.\n");
     }
-//    Color c = strToColor(color);
-//    if (strToColor(color) == null) {
-//      throw new IllegalArgumentException("invalid color.\n");
-//    }
+
+    if (color == null) {
+      throw new IllegalArgumentException("Null color.\n");
+    }
+
     if (invalidSize(width, height)) {
       throw new IllegalArgumentException("invalid shape size.\n");
     }
@@ -51,14 +52,14 @@ public class ShapeFactory {
   /**
    * change the size of a shape if the given dimensions are valid, do nothing otherwise.
    * @param shape the shape object to be changed.
-   * @param newX desired x dimension.
-   * @param newY desired y dimension.
+   * @param newW desired x dimension.
+   * @param newH desired y dimension.
    */
-  public static void changeSize(IShape shape, int newX, int newY) {
-    if (invalidSize(newX, newY)) {
+  public static void changeSize(IShape shape, int newW, int newH) {
+    if (invalidSize(newW, newH)) {
       return;
     }
-    shape.resize(newX, newY);
+    shape.resize(newW, newH);
   }
 
   /**
@@ -67,25 +68,10 @@ public class ShapeFactory {
    * @param newColor name of the desired color.
    */
   public static void changeColor(IShape shape, Color newColor) {
-    shape.setColor(newColor);
+    if (newColor != null && shape != null) {
+      shape.setColor(newColor);
+    }
   }
-
-  /**
-   * answer whether a given name is a valid color name.
-   * 
-   * @param name name of the color.
-   * @return the corresponding Color if the name represents a known color, null otherwise.
-   */
-//  private static Color strToColor(String name) {
-//    if (name == null) {
-//      return null;
-//    }
-//    try {
-//      return Color.valueOf(name.toUpperCase());
-//    } catch (IllegalArgumentException e) {
-//      return null;
-//    }
-//  }
 
   /**
    * answer whether a given set of dimensions is valid.
