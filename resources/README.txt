@@ -1,45 +1,39 @@
-HW 9
-changes:
-    - shape constructor takes Java.awt.Color object instead of my custom Color enum.
-    - add getID() and getDescription() to Snapshot class, since they need to be retrieved and displayed in the View.
-    - add an accept(IShapeVisitor) method to IShape
-      for the Controller as the Visitor to visit different type of shapes
-      and send different message to the View for rendering.
-      Justification: the IShapeVisitor is not part of the model package.
-      However, by having the model objects only aware of the visitor interface,
-      we can swap out different implementations of the visitor (the controller or view)
+>>> HW 9 design notes
+This Photo Album is implemented with the MVC pattern, and it consists of five packages:
+    - model: a system capable of storing and modifying `Snapshots` of `IShapes`.
+        Model exists on its own and need not be aware of any outside packages other than an `IShapeVisitor` Interface.
+    - views: contains a `SwingView` and a `WebView`, both implements `IView`, which is capable of displaying `IShapes` in some way.
+        Does not communicate directly with the model.
+        Both views render shapes through their own inner Renderer class that implements IRender,
+        which is capable of rendering `IShape` of a few known types. The actual rendering result depends on the concrete Renderer.
+        IRender interface extends `IShapeVisitor`, allowing it to visit `IShapes`, know their runtime type, and render them differently.
+    - controller: communicates between model and views by receiving notification/requests from the view,
+        retrieving needed info from the model, and passing them back to the view.
+        the concrete controller also implements a `Features` interface,
+        letting the view know about things it can ask the controller to do (like getting the next or prev snapshot).
+    - utilities: provide a 'ArgsReader' class for parsing and pre-checking command line arguments,
+        and a `CommandReader` class for reading the input command and set up the model accordingly.
+    - photoalbum: the main entrance of a photo album. It gets needed information with an 'ArgsReader', initialize a model,
+        sets up the model with `CommandReader`, then initialize the requested view.
+        Finally, it creates a controller and activates the program through the controller.
+
+>>> changes made
+    - Removed my `Color` enum, replaced with Java.awt.Color.
+      Since Java.awt.Color can be initialized directly with RGB values,
+      it's a more appropriate choice when we want to construct a Color with its RGB values.
+    - Removed `Point` class as it doesn't really provide any useful functionality;
+      change to using two variables x and y to represent a shape's position,
+      which can be more easily accessed without the need of going through a `Point`.
+    - Add getID() and getDescription() to Snapshot class, as they need to be retrieved and displayed in the View.
+    - Add an IShapeVisitor interface and an accept(IShapeVisitor) method to IShape
+      for an IRender to visit different type of shapes as the Visitor and render them differently.
+      Although the IShapeVisitor is not part of the model package,
+      by having the model objects only aware of the visitor interface,
+      we can swap out different implementations of the visitor (different type of IRender)
       without affecting the model objects.
+    - Add an getSnapshotAt(int index) method to IAlbum, for retrieving snapshot by index.
 
-question:
-    Command reader in the controller package with some class method to parse input.txt command into
-        - should this reader be passed the model?
-        - or it is better passin the controller and have reader send back the parsed info through a method
-            - controller.receive()
-
-    what is a good way to check for type:
-        - getType() method in IShape
-        - double dispatch: render(Controller c) {c.render(this)
-          but this way shape needs to know about controller
-        - visitor: overkill? like I'm passing myself to the visitor, why dont i just provide a get type method
-            - should IVisitor be something provided by the model then get implemented by outside pacakge?
-
-    should shape or snapshot object be stored in View for paintComponents()
-        - don't think so
-
-    way to get prev
-        - iterator doesn't go backwards
-        - save the current index as a variable in Controller?
-
-
-
-
-
-
-
-
-
-
-HW 8
+>>> previously on HW 8
 The model package overview:
 
 IShape Interface and the ShapesAlbum class:
