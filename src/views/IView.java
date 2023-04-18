@@ -19,8 +19,8 @@ public interface IView {
   default void resetFocus() { }
 
   /**
-   * implement features by connecting buttons or key with the given set of features (actions).
-   * @param features
+   * receive features that can be requested by the view.
+   * @param features available to the view.
    */
   void addFeatures(IFeatures features);
 

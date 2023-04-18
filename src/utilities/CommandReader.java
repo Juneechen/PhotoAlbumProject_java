@@ -10,6 +10,11 @@ import model.IAlbum;
  * and setting up an IAlbum with the parsed commands.
  */
 public class CommandReader {
+  /**
+   * parse and set up an album with a Readable source.
+   * @param album the model to be set up.
+   * @param in a Readable source of commands.
+   */
   public static void setupAlbum(IAlbum album, Readable in) {
     Scanner scan = new Scanner(in);
     String line;
@@ -53,16 +58,15 @@ public class CommandReader {
     scan.close();
   }
 
-
   /**
    * add command components:
    * shape: Creates a new shape. Followed by these attributes:
-   * ID - textual name for the shape
-   * Type - type of shape (only rectangles and ovals for this assignment)
-   * x position - coordinate system for both Swing and SVG starts in upper left corner
-   * y position - coordinate system for both Swing and SVG starts in upper left corner
-   * width - or "first dimension" like radius_x. for ovals
-   * height - or "second dimension" like radius_y for ovals
+   * ID - textual name for the shape.
+   * Type - type of shape (only rectangles and ovals for this assignment).
+   * x position - coordinate system for both Swing and SVG starts in upper left corner.
+   * y position - coordinate system for both Swing and SVG starts in upper left corner.
+   * width - or "first dimension" like radius_x. for ovals.
+   * height - or "second dimension" like radius_y for ovals.
    * red - RGB red value
    * green - RGB green value
    * blue - RGB blue value
@@ -83,7 +87,11 @@ public class CommandReader {
   }
 
   /**
-   * move a shape.
+   * move a shape with an array of command with these components:
+   * move: Moves a shape to a new x, y position.
+   * ID - text name for the shape.
+   * x position - coordinate system for both Swing and SVG starts in upper left corner.
+   * y position - coordinate system for both Swing and SVG starts in upper left corner.
    * @param album the model.
    * @param info the command.
    */
@@ -96,7 +104,11 @@ public class CommandReader {
   }
 
   /**
-   * change the color of a shape.
+   * change the color of a shape with an array of command with these components:
+   * color: Changes the color of a shape.
+   * red - RGB red value.
+   * green - RGB green value.
+   * blue - RGB blue value.
    * @param album the model.
    * @param info the command.
    */
@@ -110,7 +122,10 @@ public class CommandReader {
   }
 
   /**
-   * change the size of a shape.
+   * change the size of a shape with an array of command with these components:
+   * resize: Resizes the shape.
+   * width - or "first dimension" like radius_x. for ovals.
+   * height - or "second dimension" like radius_y for ovals.
    * @param album the model.
    * @param info the command.
    */
@@ -123,7 +138,9 @@ public class CommandReader {
   }
 
   /**
-   * change the position of a shape.
+   * change the position of a shape with an array of command with these components:
+   * remove: Removes the shape.
+   * ID - text name for shape to remove.
    * @param album the model.
    * @param info the command.
    */
@@ -133,7 +150,10 @@ public class CommandReader {
   }
 
   /**
-   * take a snapshot of the current shapes.
+   * take a snapshot of the current shapes with an array of command with these components:
+   * snapshot: Tells the model to take a snapshot of the current state of the album.
+   * description (optional) - optional text that the command file can use
+   * to tag the snapshot with extra information.
    * @param album the model.
    * @param info the command.
    */
@@ -147,38 +167,3 @@ public class CommandReader {
     album.takeSnapshot(note.toString().trim());
   }
 }
-
-
-/**
- * Command set:
- * shape: Creates a new shape. Followed by these attributes:
- * ID - textual name for the shape
- * Type - type of shape (only rectangles and ovals for this assignment)
- * x position - coordinate system for both Swing and SVG starts in upper left corner
- * y position - coordinate system for both Swing and SVG starts in upper left corner
- * width - or "first dimension" like radius_x. for ovals
- * height - or "second dimension" like radius_y for ovals
- * red - RGB red value
- * green - RGB green value
- * blue - RGB blue value
- *
- * move: Moves a shape to a new x, y position
- * ID - text name for the shape
- * x position - coordinate system for both Swing and SVG starts in upper left corner
- * y position - coordinate system for both Swing and SVG starts in upper left corner
- *
- * color: Changes the color of a shape
- * red - RGB red value
- * green - RGB green value
- * blue - RGB blue value
- *
- * resize: Resizes the shape
- * width - or "first dimension" like radius_x. for ovals
- * height - or "second dimension" like radius_y for ovals
- *
- * remove: Removes the shape
- * ID - text name for shape to remove
- *
- * snapshot: Tells the model to take a snapshot of the current state of the album
- * description (optional) - optional text that the command file can use to tag the snapshot with extra information
- */
