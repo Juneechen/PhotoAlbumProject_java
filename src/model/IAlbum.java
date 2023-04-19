@@ -74,7 +74,7 @@ public interface IAlbum {
    * @param idx the index of the snapshot.
    * @return the requested snapshot, or null if index out of bound.
    */
-  Snapshot getSnapshotAt(int idx);
+  ISnapshot getSnapshotAt(int idx);
 
   /**
    * show all snapshots taken.
@@ -86,19 +86,13 @@ public interface IAlbum {
    * retrieve all snapshots taken.
    * @return a unmodifiable list of all snapshots.
    */
-  List<Snapshot> getSnapshots();
+  List<ISnapshot> getSnapshots();
 
   /**
    * retrieve the ID of all snapshots taken.
    * @return a list of all snapshots' ID.
    */
   List<String> getSnapshotIDs();
-
-//  /**
-//   * retrieve a snapshot with its ID.
-//   * @return the snapshot being requested if found, null otherwise.
-//   */
-//  Snapshot getSnapshotWithID(String id);
 
   /**
    * delete all snapshots.

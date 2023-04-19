@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class ShapesAlbum implements IAlbum {
   private Map<String, IShape> shapeMap = new HashMap<>();
   private List<IShape> allShapes = new ArrayList<>();
-  private List<Snapshot> snapshots = new ArrayList<>();
+  private List<ISnapshot> snapshots = new ArrayList<>();
   private int totalSnapshots = 0;
 
 
@@ -119,13 +119,13 @@ public class ShapesAlbum implements IAlbum {
     List<IShape> temp = new ArrayList<>();
     this.allShapes.forEach(s -> temp.add(s.copy())); // add deep copies
 
-    Snapshot toAdd = new Snapshot(note, temp);
+    ISnapshot toAdd = new Snapshot(note, temp);
     this.snapshots.add(toAdd);
     this.totalSnapshots++;
   }
 
   @Override
-  public Snapshot getSnapshotAt(int idx) {
+  public ISnapshot getSnapshotAt(int idx) {
     try {
       return snapshots.get(idx);
     } catch (IndexOutOfBoundsException e) {
@@ -140,17 +140,17 @@ public class ShapesAlbum implements IAlbum {
   @Override
   public String showSnapshots() {
     return "Printing Snapshots\n"
-            + this.snapshots.stream().map(Snapshot::toString).collect(Collectors.joining("\n"));
+            + this.snapshots.stream().map(ISnapshot::toString).collect(Collectors.joining("\n"));
   }
 
   @Override
-  public List<Snapshot> getSnapshots() {
+  public List<ISnapshot> getSnapshots() {
     return Collections.unmodifiableList(snapshots);
   }
 
   @Override
   public List<String> getSnapshotIDs() {
-    return snapshots.stream().map(Snapshot::getId).collect(Collectors.toList());
+    return snapshots.stream().map(ISnapshot::getId).collect(Collectors.toList());
   }
 
   /**

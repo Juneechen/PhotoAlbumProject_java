@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * snapshot of a collection of IShape.
  */
-public class Snapshot {
+public class Snapshot implements ISnapshot {
   private static final String ID_Format = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS";
   private static final String TIME_FORMAT = "dd-MM-yyyy HH:mm:ss";
   private final LocalDateTime time;
@@ -38,26 +38,17 @@ public class Snapshot {
     this.shapes = new ArrayList<>(shapes); // shapes is already a deep copy of the original shapes
   }
 
-  /**
-   * id getter.
-   * @return the id.
-   */
+  @Override
   public String getId() {
     return this.id;
   }
 
-  /**
-   * description getter.
-   * @return the description.
-   */
+  @Override
   public String getDescription() {
     return this.description;
   }
 
-  /**
-   * retrieve a list of all shapes contained in one snapshot.
-   * @return an unmodifiable list of all shapes.
-   */
+  @Override
   public List<IShape> getShapes() {
     return Collections.unmodifiableList(shapes);
   }
