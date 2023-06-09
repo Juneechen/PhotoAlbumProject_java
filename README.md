@@ -91,10 +91,11 @@ To generate a **static HTML** file with the web view, run the following command:
 
 `java -jar PhotoAlbumProject.jar -in buildings.txt -view web -out out.html`
 
-Replace buildings.txt with the name of the desired input text file. 
+Replace `buildings.txt` with the name of the desired input text file. 
 Replace `out.html` with a desired output file name. Note that it must not have the same name with an existing file.
 This command will process the commands from the input file and generate a static web HTML file named `out.html`. 
 You can open this file in a web browser to view the photo album.
 
 If you have any further questions or need additional assistance, please let me know!
+
 juneechen2021@outlook.com
