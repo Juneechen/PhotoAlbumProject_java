@@ -12,6 +12,12 @@ import views.WebView;
 
 /**
  * Photo Album Main Entry.
+ * To run from command line:
+ *    - Put PhotoAlbumProject.jar and input files in the same directory;
+ *    for webview:
+ *    java -jar PhotoAlbumProject.jar -in inputFile.txt -view web -out out.html
+ *    for GUI Swing view:
+ *    java -jar PhotoAlbumProject.jar -in inputFile.txt -view graphical 800 800
  */
 public class PhotoAlbumMain {
 
@@ -20,8 +26,8 @@ public class PhotoAlbumMain {
    * @param args specifying input source, view, optional output source, and dimensions.
    */
   public static void main(String[] args) throws Exception {
-//    args = new String[] {"-in", "buildings.txt", "-view", "web", "-out", "buildingsOut.html", "800", "800"};
-//    args = new String[] {"-in", "buildings.txt", "-view", "graphical", "800", "800"};
+  //    args = new String[] {"-in", "buildings.txt", "-view", "web", "-out", "buildingsOut.html", "800", "800"};
+  //    args = new String[] {"-in", "buildings.txt", "-view", "graphical", "800", "800"};
 
     ArgsReader r = new ArgsReader(args); // parse arguments and check validity
 
