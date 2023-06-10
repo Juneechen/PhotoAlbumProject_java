@@ -77,7 +77,7 @@ artifact and input files.
 
 **Step 4:**
 
-To launch the ***GUI Swing view**, run such command:
+To launch the **GUI Swing view**, run such command:
 
 `java -jar PhotoAlbumProject.jar -in buildings.txt -view graphical 800 800`
 
