@@ -1,4 +1,4 @@
-# Photo Album Project with Java and Swing
+# Photo Album Application with Java and Swing
 Author: Shujun Chen
 
 ## Overview
